@@ -1,0 +1,34 @@
+{
+  "name": "com.reshape.regraph",
+  "version": "0.0.1",
+  "displayName": "ReGraph",
+  "description": "This is a package for Visual Scripting",
+  "unity": "2022.2",
+  "unityRelease": "1f1",
+  "documentationUrl": "https://gitlab.com/reshape-interactive/regraph",
+  "changelogUrl": "https://gitlab.com/reshape-interactive/regraph",
+  "licensesUrl": "https://gitlab.com/reshape-interactive/regraph",
+  "dependencies":
+  {
+
+  },
+  "keywords":
+  [
+    "visual graph",
+    "visual scripting"
+  ],
+  "samples":
+  [
+    {
+      "displayName": "ReGraph Labs",
+      "description": "Demonstrate the usage of ReGraph in lab layout.",
+      "path": "Samples~/Labs"
+    }
+  ],
+  "author":
+  {
+    "name": "Alex Ong",
+    "email": "alexocr@reshapeinteractive.com",
+    "url": "http://www.reshapeinteractive.com"
+  }
+}
