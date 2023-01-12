@@ -1,6 +1,6 @@
 {
   "name": "com.reshape.regraph",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "displayName": "ReGraph",
   "description": "A user-friendly visual scripting tool in Unity",
   "unity": "2022.2",

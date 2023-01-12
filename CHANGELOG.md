@@ -1,5 +1,9 @@
 # A user-friendly visual scripting tool in Unity
 
+## [0.1.3] - 2019-01-12
+
+Testing with version controlling again
+
 ## [0.1.2] - 2019-01-12
 
 Testing with version controlling
