@@ -22,7 +22,7 @@
     {
       "displayName": "Labs",
       "description": "Demonstrate the usage of ReGraph in lab layout.",
-      "path": "Samples/Labs"
+      "path": "Samples~/Labs"
     }
   ],
   "author":
