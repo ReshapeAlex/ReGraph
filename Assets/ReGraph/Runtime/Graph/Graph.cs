@@ -16,8 +16,9 @@ namespace Reshape.ReGraph
         public RootNode rootNode;
 
         [SerializeReference]
-        [HideIf("HavePreviewNode")]
+        [HideIf("HideNodesList")]
         [DisableIf("@HavePreviewNode() == false")]
+        [ListDrawerSettings(HideAddButton = true, HideRemoveButton = true)]
         public List<GraphNode> nodes = new List<GraphNode>();
         
         [SerializeField, ReadOnly, HideLabel]
@@ -77,6 +78,13 @@ namespace Reshape.ReGraph
             return HavePreviewNode() == false;
         }
 
+        public bool HideNodesList ()
+        {
+            if (rootNode == null)
+                return true;
+            return HavePreviewNode();
+        }
+
         public void UnselectedPreviewNode ()
         {
             previewNode = null;
@@ -93,6 +101,10 @@ namespace Reshape.ReGraph
         public Graph ()
         {
             executes = new GraphExecutes();
+        }
+
+        public void Create ()
+        {
             rootNode = new RootNode();
             nodes.Add(rootNode);
             nodes.Add(new RootNode());

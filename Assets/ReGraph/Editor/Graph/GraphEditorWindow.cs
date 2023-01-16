@@ -109,16 +109,20 @@ namespace Reshape.ReGraph
                 ClearSelection();
                 return;
             }
+            
+            GraphRunner runner = runnerObj.targetObject as GraphRunner;
+            if (titleLabel != null)
+                titleLabel.text = $"Graph from GameObject {runner.gameObject.name} in {runner.gameObject.scene.path}";
 
+            if (runner.graph.rootNode == null)
+            {
+                ClearSelection();
+                return;
+            }
+            
             serializer = new SerializedGraph(runnerObj);
             serializer.SetViewPreviewNode(null);
             
-            if (titleLabel != null)
-            {
-                GraphRunner runner = runnerObj.targetObject as GraphRunner;
-                titleLabel.text = $"Graph from GameObject {runner.gameObject.name} in {runner.gameObject.scene.path}";
-            }
-
             //overlayView.Hide();
             if (treeView != null)
                 treeView.PopulateView(serializer);

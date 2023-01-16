@@ -8,8 +8,8 @@ namespace Reshape.ReGraph
     public class GraphRunnerEditor : OdinEditor
     {
         private Graph graphCache;
-        
-        public override void OnInspectorGUI()
+
+        public override void OnInspectorGUI ()
         {
             if (this.Tree != null && this.Tree.UnitySerializedObject != null)
             {
@@ -18,14 +18,24 @@ namespace Reshape.ReGraph
                     GraphRunner runner = this.Tree.UnitySerializedObject.targetObject as GraphRunner;
                     graphCache = runner.graph;
                 }
+
                 if (graphCache != null && !graphCache.HavePreviewNode())
                 {
-                    if (GUILayout.Button("Edit graph"))
+                    if (graphCache.rootNode == null)
                     {
-                        GraphEditorWindow.OpenWindow(this.Tree.UnitySerializedObject);
+                        if (GUILayout.Button("Create graph"))
+                        {
+                            
+                        }
+                    }
+                    else
+                    {
+                        if (GUILayout.Button("Edit graph"))
+                            GraphEditorWindow.OpenWindow(this.Tree.UnitySerializedObject);
                     }
                 }
             }
+
             base.OnInspectorGUI();
         }
     }
