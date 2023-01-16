@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using System.Collections;
 #if UNITY_EDITOR
-    using UnityEditor;
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 #endif
 
 namespace Reshape.ReGraph
@@ -11,16 +13,27 @@ namespace Reshape.ReGraph
     [Serializable]
     public class Graph
     {
+        public enum GraphType
+        {
+            None,
+            BehaviourGraph = 10
+        }
+
+        [SerializeField]
+        [ValueDropdown("TypeChoice")]
+        [DisableIf("@Created")]
+        private GraphType type;
+
         [SerializeReference]
         [HideInInspector]
-        public RootNode rootNode;
+        private RootNode rootNode;
 
         [SerializeReference]
         [HideIf("HideNodesList")]
         [DisableIf("@HavePreviewNode() == false")]
         [ListDrawerSettings(HideAddButton = true, HideRemoveButton = true)]
         public List<GraphNode> nodes = new List<GraphNode>();
-        
+
         [SerializeField, ReadOnly, HideLabel]
         [HideIf("@IsApplicationPlaying() == false")]
         private GraphExecutes executes;
@@ -30,30 +43,53 @@ namespace Reshape.ReGraph
 #if UNITY_EDITOR
         [HideInInspector]
         public Vector3 viewPosition = new Vector3(300, 200);
+
         [HideInInspector]
         public Vector3 viewScale = Vector3.one;
+
         [SerializeReference]
         [HideIf("HidePreviewNode")]
-        [HideLabel]
         [HideDuplicateReferenceBox]
+        [HideLabel]
         [BoxGroup("PreviewNode", GroupName = "@GetPreviewNodeName()")]
-        [OnInspectorDispose("UnselectedPreviewNode")]
         public GraphNode previewNode;
+
         [HideInInspector]
         public bool previewSelected;
+
         [ShowIfGroup("SelectionWarning", Condition = "ShowWarning")]
         [BoxGroup("SelectionWarning/Hide", ShowLabel = false)]
         [HideLabel]
         [DisplayAsString]
         public string multipleSelectionWarning = "Multiple Dialog Tree selected!";
+
         [HideInInspector]
-        public int selectedNodeCount;
+        public List<ISelectable> selectedViewNode;
+
+        [ShowIf("@Created == false")]
+        [Button]
+        public void CreateGraph ()
+        {
+            if (type == GraphType.None)
+            {
+                EditorUtility.DisplayDialog("Create Graph", "Please select a graph type before click on Create Graph button", "OK");
+            }
+            else
+            {
+                Create();
+            }
+        }
+
+        private static IEnumerable TypeChoice = new ValueDropdownList<GraphType>()
+        {
+            {"Behaviour Graph", GraphType.BehaviourGraph},
+        };
 
         public bool IsApplicationPlaying ()
         {
             return Application.isPlaying;
         }
-        
+
         public bool HavePreviewNode ()
         {
             if (previewNode == null)
@@ -63,17 +99,18 @@ namespace Reshape.ReGraph
 
         public bool ShowWarning ()
         {
-            if (selectedNodeCount > 1)
+            if (selectedViewNode != null && selectedViewNode.Count > 1)
             {
-                multipleSelectionWarning = "Multiple Graph Nodes Selected!"; 
+                multipleSelectionWarning = "Multiple Graph Nodes Selected!";
                 return true;
             }
+
             return false;
         }
 
         public bool HidePreviewNode ()
         {
-            if (selectedNodeCount > 1)
+            if (selectedViewNode != null && selectedViewNode.Count > 1)
                 return true;
             return HavePreviewNode() == false;
         }
@@ -83,11 +120,6 @@ namespace Reshape.ReGraph
             if (rootNode == null)
                 return true;
             return HavePreviewNode();
-        }
-
-        public void UnselectedPreviewNode ()
-        {
-            previewNode = null;
         }
 
         public string GetPreviewNodeName ()
@@ -101,6 +133,21 @@ namespace Reshape.ReGraph
         public Graph ()
         {
             executes = new GraphExecutes();
+        }
+
+        public GraphNode RootNode
+        {
+            get { return rootNode; }
+        }
+
+        public GraphType Type
+        {
+            get { return type; }
+        }
+
+        public bool Created
+        {
+            get { return rootNode != null; }
         }
 
         public void Create ()

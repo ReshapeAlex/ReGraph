@@ -11,31 +11,25 @@ namespace Reshape.ReGraph
 
         public override void OnInspectorGUI ()
         {
-            if (this.Tree != null && this.Tree.UnitySerializedObject != null)
+            if (Tree != null && Tree.UnitySerializedObject != null)
             {
                 if (graphCache == null)
                 {
-                    GraphRunner runner = this.Tree.UnitySerializedObject.targetObject as GraphRunner;
+                    GraphRunner runner = Tree.UnitySerializedObject.targetObject as GraphRunner;
                     graphCache = runner.graph;
-                }
+                 }
 
-                if (graphCache != null && !graphCache.HavePreviewNode())
+                if (graphCache != null)
                 {
-                    if (graphCache.rootNode == null)
+                    if (!graphCache.HavePreviewNode() && graphCache.Created)
                     {
-                        if (GUILayout.Button("Create graph"))
-                        {
-                            
-                        }
-                    }
-                    else
-                    {
-                        if (GUILayout.Button("Edit graph"))
+                        if (GUILayout.Button("Edit Graph"))
                             GraphEditorWindow.OpenWindow(this.Tree.UnitySerializedObject);
+                        base.OnInspectorGUI();
+                        return;
                     }
                 }
             }
-
             base.OnInspectorGUI();
         }
     }

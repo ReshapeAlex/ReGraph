@@ -28,7 +28,7 @@ namespace Reshape.ReGraph
         {
             if (graph == null)
                 return;
-            Graph.Traverse(graph.rootNode, (n) =>
+            Graph.Traverse(graph.RootNode, (n) =>
             {
                 if (n.drawGizmos)
                     n.OnDrawGizmos();

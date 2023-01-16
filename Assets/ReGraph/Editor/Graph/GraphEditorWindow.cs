@@ -114,7 +114,7 @@ namespace Reshape.ReGraph
             if (titleLabel != null)
                 titleLabel.text = $"Graph from GameObject {runner.gameObject.name} in {runner.gameObject.scene.path}";
 
-            if (runner.graph.rootNode == null)
+            if (runner != null && !runner.graph.Created)
             {
                 ClearSelection();
                 return;
@@ -158,6 +158,7 @@ namespace Reshape.ReGraph
         {
             if (serializer != null)
             {
+                serializer.SetViewPreviewNode(null);
                 serializer.SetViewPreviewSelected(false);
                 //RepaintInspector("UnityEditor.GameObjectInspector");
             }
@@ -175,6 +176,13 @@ namespace Reshape.ReGraph
                         if (serializer == null || runner.graph != serializer.graph)
                         {
                             SelectGraph(new SerializedObject(runner));
+                        }
+
+                        if (runner.graph.selectedViewNode != null && runner.graph.selectedViewNode.Count == 1 && !runner.graph.HavePreviewNode())
+                        {
+                            GraphNodeView nodeView = runner.graph.selectedViewNode[0] as GraphNodeView;
+                            serializer.SetViewPreviewNode(nodeView.node);
+                            serializer.SetViewPreviewSelected(true);
                         }
                     }
                 }

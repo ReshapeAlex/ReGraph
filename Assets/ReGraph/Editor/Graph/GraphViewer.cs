@@ -61,7 +61,7 @@ namespace Reshape.ReGraph
         {
             serializer = tree;
             ClearView();
-            Debug.Assert(serializer.graph.rootNode != null);
+            Debug.Assert(serializer.graph.Created);
 
             serializer.graph.nodes.ForEach(n => CreateNodeView(n));
 
@@ -226,7 +226,7 @@ namespace Reshape.ReGraph
                 view.UpdateState();
             });
             if (serializer != null )
-                serializer.graph.selectedNodeCount = selection.Count;
+                serializer.graph.selectedViewNode = selection;
         }
     }
 }
