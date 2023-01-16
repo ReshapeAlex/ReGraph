@@ -13,6 +13,11 @@ namespace Reshape.ReGraph
 
         protected override void OnStop () { }
 
+        protected override State OnDisabled (GraphExecution execution, int updateId)
+        {
+            return OnUpdate(execution, updateId);
+        }
+
         protected override State OnUpdate (GraphExecution execution, int updateId)
         {
             //State state = execution.variables.GetState(guid, State.Running);

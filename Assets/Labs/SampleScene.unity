@@ -176,6 +176,7 @@ MonoBehaviour:
       type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
         guid: be5a3436-0f25-431a-98ca-3f21c44449ee
+        enabled: 1
         position: {x: -184, y: 11.959991}
         name: Root Node
         description: 
@@ -187,6 +188,7 @@ MonoBehaviour:
       type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
         guid: e3d3cdb6-a3d8-4668-9247-56a277a1dac6
+        enabled: 1
         position: {x: 163, y: 35}
         name: Root Node
         description: 
@@ -356,7 +358,8 @@ MonoBehaviour:
       type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
         guid: 0ae0cb77-d3f4-4abb-a2d4-e112d0712966
-        position: {x: 0, y: 0}
+        enabled: 1
+        position: {x: 2, y: -1}
         name: Root Node
         description: 
         drawGizmos: 0
@@ -367,7 +370,8 @@ MonoBehaviour:
       type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
         guid: 6513b420-df15-4aeb-bdb3-39b527c1e327
-        position: {x: 94, y: 20}
+        enabled: 1
+        position: {x: 185, y: 24}
         name: Root Node
         description: 
         drawGizmos: 0
@@ -480,6 +484,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1694344803
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1694344805}
+  - component: {fileID: 1694344804}
+  m_Layer: 0
+  m_Name: GameObject (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1694344804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694344803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3586afbf28c64d03bef1f56ce2a79a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph:
+    type: 10
+    rootNode:
+      rid: 7313416259850207352
+    nodes:
+    - rid: 7313416259850207352
+    executes:
+      executionList: []
+    viewPosition: {x: 300, y: 200, z: 0}
+    viewScale: {x: 1, y: 1, z: 1}
+    previewNode:
+      rid: 7313416259850207352
+    previewSelected: 1
+    multipleSelectionWarning: Multiple Dialog Tree selected!
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 7313416259850207352
+      type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        guid: c66ef327-7b70-4bcc-89b6-ebf6b1f90fae
+        enabled: 1
+        position: {x: 0, y: 0}
+        name: Root Node
+        description: 
+        drawGizmos: 0
+        nodeDisplayDescription: 
+        child:
+          rid: -2
+--- !u!4 &1694344805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694344803}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.5496674, y: 4.400158, z: 3.979889}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3979461116391377003
 PrefabInstance:

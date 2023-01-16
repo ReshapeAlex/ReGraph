@@ -22,6 +22,7 @@ namespace Reshape.ReGraph
         [SerializeField]
         [ValueDropdown("TypeChoice")]
         [DisableIf("@Created")]
+        [HideIf("HavePreviewNode")]
         private GraphType type;
 
         [SerializeReference]
@@ -121,7 +122,7 @@ namespace Reshape.ReGraph
                 return true;
             return HavePreviewNode();
         }
-
+        
         public string GetPreviewNodeName ()
         {
             if (previewNode == null)
@@ -154,7 +155,6 @@ namespace Reshape.ReGraph
         {
             rootNode = new RootNode();
             nodes.Add(rootNode);
-            nodes.Add(new RootNode());
         }
 
         public void Bind (GraphContext context)
