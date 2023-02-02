@@ -92,7 +92,7 @@ namespace Reshape.ReGraph
                 if (Selection.activeGameObject)
                 {
                     GraphRunner runner = Selection.activeGameObject.GetComponent<GraphRunner>();
-                    if (runner)
+                    if (runner != null)
                     {
                         SelectGraph(new SerializedObject(runner));
                         return;
@@ -181,8 +181,11 @@ namespace Reshape.ReGraph
                         if (runner.graph.selectedViewNode != null && runner.graph.selectedViewNode.Count == 1 && !runner.graph.HavePreviewNode())
                         {
                             GraphNodeView nodeView = runner.graph.selectedViewNode[0] as GraphNodeView;
-                            serializer.SetViewPreviewNode(nodeView.node);
-                            serializer.SetViewPreviewSelected(true);
+                            if (nodeView != null)
+                            {
+                                serializer.SetViewPreviewNode(nodeView.node);
+                                serializer.SetViewPreviewSelected(true);
+                            }
                         }
                     }
                 }

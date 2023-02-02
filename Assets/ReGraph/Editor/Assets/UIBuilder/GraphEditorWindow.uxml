@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/ReGraph/Editor/Assets/UIBuilder/GrapgEditorWindow.uss?fileID=12385&amp;guid=4995cca0cf6d04c6bb0c3e4cfef14084&amp;type=3#GrapgEditorWindow" />
     <uie:Toolbar>
-        <uie:ToolbarMenu display-tooltip-when-elided="true" text="Assets " />
+        <uie:ToolbarMenu display-tooltip-when-elided="true" text="Settings " />
     </uie:Toolbar>
     <!--Reshape.Controller.SplitView fixed-pane-initial-dimension="300">
         <ui:VisualElement name="left-panel">

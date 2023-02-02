@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 
 namespace Reshape.ReGraph
 {
-    [CreateAssetMenu(menuName = "Reshape/ReGraph Settings", order = 23)]
+    //[CreateAssetMenu(menuName = "Reshape/ReGraph Settings", order = 23)]
     class GraphSettings : ScriptableObject
     {
         public VisualTreeAsset graphXml;

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -7,13 +8,28 @@ namespace Reshape.ReGraph
     [HideReferenceObjectPicker]
     public abstract class GraphNode : Node
     {
+        public enum ChildrenType
+        {
+            Single,
+            Multiple,
+            None
+        }
+
+        [SerializeReference]
+        [ShowIf("ShowChildren"), BoxGroup("Show Debug Info")]
+        [ReadOnly]
+        [ListDrawerSettings(ListElementLabelName = "guid")]
+        public List<GraphNode> children = new List<GraphNode>();
+
         [HideInInspector]
         public GraphContext context;
+        
+        public void Abort (GraphExecution execution)
+        {
+            Graph.Traverse(this, (node) => { node.OnStop(execution, 0); });
+        }
 
 #if UNITY_EDITOR
-        [DisplayAsString]
-        [HideLabel]
-        public string name;
         [HideInInspector]
         [TextArea]
         public string description;
@@ -21,18 +37,19 @@ namespace Reshape.ReGraph
         public bool drawGizmos = false;
         [HideInInspector]
         public string nodeDisplayDescription;
-#endif
 
-        public void Abort ()
+        private bool ShowChildren ()
         {
-            Graph.Traverse(this, (node) =>
-            {
-                node.OnStop();
-            });
+            if (GetType().ToString().Contains("RootNode"))
+                return true;
+            return showAdvanceSettings;
         }
-
-#if UNITY_EDITOR
-        public abstract string GetNodeDisplayTitle ();
+        
+        public abstract string GetNodeInspectorTitle ();
+        public abstract string GetNodeViewTitle ();
 #endif
+
+        public abstract ChildrenType GetChildrenType ();
+        public abstract void GetChildren (ref List<GraphNode> list);
     }
 }

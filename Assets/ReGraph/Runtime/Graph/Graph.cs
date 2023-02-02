@@ -1,8 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -32,7 +32,7 @@ namespace Reshape.ReGraph
         [SerializeReference]
         [HideIf("HideNodesList")]
         [DisableIf("@HavePreviewNode() == false")]
-        [ListDrawerSettings(HideAddButton = true, HideRemoveButton = true)]
+        [ListDrawerSettings(HideAddButton = true, HideRemoveButton = true, Expanded = false, ShowIndexLabels = true, ListElementLabelName = "GetNodeInspectorTitle")]
         public List<GraphNode> nodes = new List<GraphNode>();
 
         [SerializeField, ReadOnly, HideLabel]
@@ -67,6 +67,11 @@ namespace Reshape.ReGraph
         [HideInInspector]
         public List<ISelectable> selectedViewNode;
 
+        private static IEnumerable TypeChoice = new ValueDropdownList<GraphType>()
+        {
+            {"Behaviour Graph", GraphType.BehaviourGraph},
+        };
+
         [ShowIf("@Created == false")]
         [Button]
         public void CreateGraph ()
@@ -81,10 +86,11 @@ namespace Reshape.ReGraph
             }
         }
 
-        private static IEnumerable TypeChoice = new ValueDropdownList<GraphType>()
+        public void Create ()
         {
-            {"Behaviour Graph", GraphType.BehaviourGraph},
-        };
+            rootNode = new RootNode();
+            nodes.Add(rootNode);
+        }
 
         public bool IsApplicationPlaying ()
         {
@@ -122,12 +128,12 @@ namespace Reshape.ReGraph
                 return true;
             return HavePreviewNode();
         }
-        
+
         public string GetPreviewNodeName ()
         {
             if (previewNode == null)
                 return String.Empty;
-            return previewNode.GetType().ToString();
+            return previewNode.GetNodeInspectorTitle();
         }
 #endif
 
@@ -136,41 +142,30 @@ namespace Reshape.ReGraph
             executes = new GraphExecutes();
         }
 
-        public GraphNode RootNode
-        {
-            get { return rootNode; }
-        }
+        public GraphNode RootNode => rootNode;
 
-        public GraphType Type
-        {
-            get { return type; }
-        }
+        public GraphType Type => type;
 
-        public bool Created
-        {
-            get { return rootNode != null; }
-        }
+        public bool Created => rootNode != null;
 
-        public void Create ()
+        public void Bind (GraphContext c)
         {
-            rootNode = new RootNode();
-            nodes.Add(rootNode);
-        }
-
-        public void Bind (GraphContext context)
-        {
-            this.context = context;
+            context = c;
             Traverse(rootNode, node => { node.context = context; });
         }
 
         public void Execute (long id, int updateId)
         {
+            if (!Created)
+                return;
             var execution = executes.Add(id);
             execution.state = rootNode.Update(execution, updateId);
         }
 
         public void Update (int updateId)
         {
+            if (!Created)
+                return;
             for (int i = 0; i < executes.Count; i++)
             {
                 var execution = executes.Get(i);
@@ -187,39 +182,26 @@ namespace Reshape.ReGraph
 
         public void Stop ()
         {
-            rootNode.Abort();
+            for (int i = 0; i < executes.Count; i++)
+                rootNode?.Abort(executes.Get(i));
             Reset();
         }
 
         public static List<GraphNode> GetChildren (GraphNode parent)
         {
-            List<GraphNode> children = new List<GraphNode>();
-
-            /*if (parent is DecoratorNode decorator && decorator.child != null)
-            {
-                children.Add(decorator.child);
-            }*/
-
-            if (parent is RootNode {child: { }} rootNode)
-            {
-                children.Add(rootNode.child);
-            }
-
-            /*if (parent is CompositeNode composite)
-            {
-                return composite.children;
-            }*/
-
+            var children = new List<GraphNode>();
+            parent.GetChildren(ref children);
             return children;
         }
 
-        public static void Traverse (GraphNode node, System.Action<GraphNode> visitor)
+        public static void Traverse (GraphNode node, Action<GraphNode> visitor)
         {
             if (node != null)
             {
                 visitor.Invoke(node);
                 var children = GetChildren(node);
-                children.ForEach((n) => Traverse(n, visitor));
+                foreach (var n in children)
+                    Traverse(n, visitor);
             }
         }
     }

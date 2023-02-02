@@ -93,12 +93,16 @@
     background-color: rgb(152, 206, 0);
 }
 
-.composite #input {
+.behaviour #input {
     background-color: rgb(246, 174, 45);
 }
 
-.decorator #input {
+.trigger #input {
     background-color: rgb(137, 166, 251);
+}
+
+.disable #input {
+    background-color: rgb(100, 100, 100);
 }
 
 .root #input {

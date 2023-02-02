@@ -11,25 +11,32 @@ namespace Reshape.ReGraph
 
         public override void OnInspectorGUI ()
         {
-            if (Tree != null && Tree.UnitySerializedObject != null)
+            if (!Application.isPlaying)
             {
-                if (graphCache == null)
+                if (Tree != null && Tree.UnitySerializedObject != null)
                 {
-                    GraphRunner runner = Tree.UnitySerializedObject.targetObject as GraphRunner;
-                    graphCache = runner.graph;
-                 }
-
-                if (graphCache != null)
-                {
-                    if (!graphCache.HavePreviewNode() && graphCache.Created)
+                    if (graphCache == null)
                     {
-                        if (GUILayout.Button("Edit Graph"))
-                            GraphEditorWindow.OpenWindow(this.Tree.UnitySerializedObject);
-                        base.OnInspectorGUI();
-                        return;
+                        GraphRunner runner = Tree.UnitySerializedObject.targetObject as GraphRunner;
+                        if (runner != null)
+                            graphCache = runner.graph;
+                    }
+
+                    if (graphCache != null)
+                    {
+                        if (!graphCache.HavePreviewNode() && graphCache.Created)
+                        {
+
+                            EditorGUILayout.HelpBox("All graph data in saved in the scene file.", MessageType.Info);
+                            if (GUILayout.Button("Edit Graph"))
+                                GraphEditorWindow.OpenWindow(this.Tree.UnitySerializedObject);
+                            base.OnInspectorGUI();
+                            return;
+                        }
                     }
                 }
             }
+
             base.OnInspectorGUI();
         }
     }

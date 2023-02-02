@@ -6,15 +6,14 @@ namespace Reshape.ReGraph
     {
         public GameObject gameObject;
         public Transform transform;
+        public GraphRunner runner;
+        public Graph graph;
         
-        public GraphContext(GameObject gameObject)
+        public GraphContext(GraphRunner runner)
         {
-            this.gameObject = gameObject;
-            CreateFromGameObject();
-        }
-
-        public void CreateFromGameObject()
-        {
+            this.runner = runner;
+            graph = runner.graph;
+            gameObject = runner.gameObject;
             transform = gameObject.transform;
         }
     }

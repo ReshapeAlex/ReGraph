@@ -10,8 +10,6 @@ namespace Reshape.ReGraph
 {
     public class GraphViewer : GraphView
     {
-        private string[] baseNode = new string[] {"ActionNode", "CompositeNode", "DecoratorNode"};
-
         public new class UxmlFactory : UxmlFactory<GraphViewer, GraphView.UxmlTraits> { }
 
         public Action<GraphNodeView> OnNodeSelected;
@@ -19,7 +17,7 @@ namespace Reshape.ReGraph
 
         SerializedGraph serializer;
         GraphSettings settings;
-        
+
         public GraphViewer ()
         {
             settings = GraphSettings.GetSettings();
@@ -28,9 +26,9 @@ namespace Reshape.ReGraph
 
             this.AddManipulator(new ContentZoomer());
             this.AddManipulator(new ContentDragger());
+            this.AddManipulator(new GraphDoubleClickSelection());
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
-            this.AddManipulator(new GraphDoubleClickSelection());
 
             var styleSheet = settings.graphStyle;
             styleSheets.Add(styleSheet);
@@ -84,9 +82,26 @@ namespace Reshape.ReGraph
 
         public override List<Port> GetCompatiblePorts (Port startPort, NodeAdapter nodeAdapter)
         {
-            return ports.ToList().Where(endPort =>
-                endPort.direction != startPort.direction &&
-                endPort.node != startPort.node).ToList();
+            List<Port> returnList = new List<Port>();
+            List<Port> portList = ports.ToList();
+            GraphNodeView startNodeView = (GraphNodeView)startPort.node;
+            for (int i = 0; i < portList.Count; i++)
+            {
+                Port endPort = portList[i];
+                if (serializer.graph.Type == Graph.GraphType.BehaviourGraph)
+                {
+                    GraphNodeView endNodeView = (GraphNodeView)endPort.node;
+                    if (startNodeView.node is RootNode && endNodeView.node is TriggerNode == false)
+                        continue;
+                    if (startNodeView.node is TriggerNode && endNodeView.node is BehaviourNode == false)
+                        continue;
+                    if (startNodeView.node is BehaviourNode && endNodeView.node is BehaviourNode == false)
+                        continue;
+                }
+                if (endPort.direction != startPort.direction && endPort.node != startPort.node)
+                    returnList.Add(endPort);
+            }
+            return returnList;
         }
 
         private GraphViewChange OnGraphViewChanged (GraphViewChange graphViewChange)
@@ -121,11 +136,13 @@ namespace Reshape.ReGraph
                     serializer.AddChild(parentView.node, childView.node);
                 });
             }
-
+            
             nodes.ForEach((n) =>
             {
                 GraphNodeView view = n as GraphNodeView;
-                view.SortChildren();
+                List<GraphNode> sorted = view.SortChildren();
+                if (sorted != null)
+                    serializer.SortChildren(view.node, sorted);
             });
 
             return graphViewChange;
@@ -133,55 +150,60 @@ namespace Reshape.ReGraph
 
         public override void BuildContextualMenu (ContextualMenuPopulateEvent evt)
         {
-            //base.BuildContextualMenu(evt);
-
-            //evt.menu.AppendSeparator();
-
-            Vector2 nodePosition = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
-
-            /*var types = TypeCache.GetTypesDerivedFrom<ActionNode>();
-            foreach (var type in types)
-                evt.menu.AppendAction($"[Action]/{type.Name}", (a) => CreateNode(type, nodePosition));
-            types = TypeCache.GetTypesDerivedFrom<CompositeNode>();
-            foreach (var type in types)
-                evt.menu.AppendAction($"[Composite]/{type.Name}", (a) => CreateNode(type, nodePosition));
-            types = TypeCache.GetTypesDerivedFrom<DecoratorNode>();
-            foreach (var type in types)
-                evt.menu.AppendAction($"[Decorator]/{type.Name}", (a) => CreateNode(type, nodePosition));*/
-
             if (serializer != null && serializer.graph != null)
             {
-                List<string> allowNodeTypes = new List<string>();
-                /*if (serializer.graph.GetType().Equals(typeof(DialogGraph)))
-                {
-                    allowNodeTypes.Add("DialogMessage");
-                    allowNodeTypes.Add("DialogChoice");
-                    allowNodeTypes.Add("DialogAction");
-                    allowNodeTypes.Add("DebugNode");
-                }*/
-
-                var types = TypeCache.GetTypesDerivedFrom<GraphNode>();
-                foreach (var type in types)
-                {
-                    bool add = false;
-                    if (allowNodeTypes != null)
-                    {
-                        if (allowNodeTypes.Count == 0)
-                            add = true;
-                        else if (allowNodeTypes.Contains(type.Name))
-                            add = true;
-                    }
-                    else
-                    {
-                        add = true;
-                    }
-
-                    if (add && baseNode.Contains(type.Name))
-                        add = false;
-                    //if (add)
-                    //    evt.menu.AppendAction($"{StringExtensions.SplitCamelCase(type.Name)}", (a) => CreateNode(type, nodePosition));
-                }
+                Vector2 nodePosition = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
+                Dictionary<string, System.Type> list = GetContextualList(serializer.graph);
+                foreach (var menuItem in list)
+                    evt.menu.AppendAction(menuItem.Key, (a) => CreateNode(menuItem.Value, nodePosition));
             }
+        }
+
+        /* START - Custom View start here */ 
+        public Dictionary<string, System.Type> GetContextualList (Graph graph)
+        {
+            var list = new Dictionary<string, System.Type>();
+            if (graph.Type == Graph.GraphType.BehaviourGraph)
+            {
+                var types = TypeCache.GetTypesDerivedFrom<TriggerNode>();
+                foreach (var type in types)
+                    list.Add($"Trigger/{type.Name.Substring(0,type.Name.IndexOf("TriggerNode"))}", type);
+                types = TypeCache.GetTypesDerivedFrom<BehaviourNode>();
+                foreach (var type in types)
+                    list.Add($"Behaviour/{type.Name.Substring(0,type.Name.IndexOf("BehaviourNode"))}", type);
+            }
+            return list;
+        }
+
+        public string GetStyle (GraphNode node)
+        {
+            if (node is TriggerNode)
+            {
+                return "trigger";
+            }
+            else if (node is RootNode)
+            {
+                return "root";
+            }
+            else if (node is BehaviourNode)
+            {
+                return "behaviour";
+            }
+            return string.Empty;
+        }
+        /* END - Custom View end here */
+        
+        public string GetDisableStyle ()
+        {
+            return "disable";
+        }
+
+        public ContextualMenuPopulateEvent GetDeleteAction (ContextualMenuPopulateEvent evt)
+        {
+            evt.menu.AppendAction("Delete", (Action<DropdownMenuAction>) (a => this.DeleteSelectionCallback(UnityEditor.Experimental.GraphView.GraphView.AskUser.DontAskUser)),
+                (Func<DropdownMenuAction, DropdownMenuAction.Status>) (a => this.canDeleteSelection ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled));
+            evt.menu.AppendSeparator();
+            return evt;
         }
 
         void SelectFolder (string path)
@@ -212,7 +234,7 @@ namespace Reshape.ReGraph
 
         void CreateNodeView (GraphNode node)
         {
-            GraphNodeView nodeView = new GraphNodeView(serializer, node);
+            GraphNodeView nodeView = new GraphNodeView(serializer, node, this);
             nodeView.OnNodeSelected = OnNodeSelected;
             nodeView.OnNodeUnselected = OnNodeUnselected;
             AddElement(nodeView);
@@ -225,7 +247,7 @@ namespace Reshape.ReGraph
                 GraphNodeView view = n as GraphNodeView;
                 view.UpdateState();
             });
-            if (serializer != null )
+            if (serializer != null)
                 serializer.graph.selectedViewNode = selection;
         }
     }

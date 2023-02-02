@@ -8,11 +8,13 @@ namespace Reshape.ReGraph
     {
         public Dictionary<string, Node.State> state;
         public Dictionary<string, bool> started;
+        public Dictionary<string, int> intList;
 
         public GraphVariables ()
         {
             state = new Dictionary<string, Node.State>();
             started = new Dictionary<string, bool>();
+            intList = new Dictionary<string, int>();
         }
 
         public Node.State GetState (string nodeId, Node.State defaultValue)
@@ -39,6 +41,19 @@ namespace Reshape.ReGraph
         {
             if (!started.TryAdd(nodeId, value))
                 started[nodeId] = value;
+        }
+        
+        public int GetInt (string nodeId, int defaultValue = 0)
+        {
+            if (intList.TryGetValue(nodeId, out int outInt))
+                return outInt;
+            return defaultValue;
+        }
+        
+        public void SetInt (string nodeId, int value)
+        {
+            if (!intList.TryAdd(nodeId, value))
+                intList[nodeId] = value;
         }
     }
 }

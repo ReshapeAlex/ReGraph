@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
@@ -13,14 +15,16 @@ namespace Reshape.ReGraph
         public Action<GraphNodeView> OnNodeUnselected;
         public SerializedGraph serializer;
         public GraphNode node;
+        public GraphViewer viewer;
         public Port input;
         public Port output;
 
-        public GraphNodeView (SerializedGraph tree, GraphNode node) : base(AssetDatabase.GetAssetPath(GraphSettings.GetSettings().graphNodeXml))
+        public GraphNodeView (SerializedGraph tree, GraphNode node, GraphViewer viewer) : base(AssetDatabase.GetAssetPath(GraphSettings.GetSettings().graphNodeXml))
         {
             this.serializer = tree;
             this.node = node;
-            this.title = node.GetNodeDisplayTitle();
+            this.viewer = viewer;
+            this.title = node.GetNodeViewTitle();
             this.viewDataKey = node.guid;
 
             style.left = node.position.x;
@@ -29,7 +33,7 @@ namespace Reshape.ReGraph
             CreateInputPorts();
             CreateOutputPorts();
             SetupClasses();
-            //SetupDataBinding();
+            SetupDataBinding();
         }
 
         private void SetupDataBinding ()
@@ -40,44 +44,32 @@ namespace Reshape.ReGraph
 
             Label descriptionLabel = this.Q<Label>("description");
             descriptionLabel.BindProperty(descriptionProp);
+
+            this.node.onEnableChange -= OnEnableChange;
+            this.node.onEnableChange += OnEnableChange;
+        }
+
+        private void OnEnableChange ()
+        {
+            if (this.node.enabled)
+                RemoveFromClassList(viewer.GetDisableStyle());
+            else
+                RemoveFromClassList(viewer.GetStyle(node));
+            SetupClasses();
         }
 
         private void SetupClasses ()
         {
-            /*if (node is ActionNode)
-            {
-                AddToClassList("action");
-            }
-            else if (node is CompositeNode)
-            {
-                AddToClassList("composite");
-            }
-            else if (node is DecoratorNode)
-            {
-                AddToClassList("decorator");
-            }
-            else*/ if (node is RootNode)
-            {
-                AddToClassList("root");
-            }
+            if (!this.node.enabled)
+                AddToClassList(viewer.GetDisableStyle());
+            else
+                AddToClassList(viewer.GetStyle(node));
         }
 
         private void CreateInputPorts ()
         {
-            /*if (node is ActionNode)
-            {
+            if (node is RootNode == false)
                 input = new GraphNodePort(Direction.Input, Port.Capacity.Single);
-            }
-            else if (node is CompositeNode)
-            {
-                input = new GraphNodePort(Direction.Input, Port.Capacity.Single);
-            }
-            else if (node is DecoratorNode)
-            {
-                input = new GraphNodePort(Direction.Input, Port.Capacity.Single);
-            }
-            else*/ if (node is RootNode) { }
-
             if (input != null)
             {
                 input.portName = "";
@@ -88,20 +80,10 @@ namespace Reshape.ReGraph
 
         private void CreateOutputPorts ()
         {
-            /*if (node is ActionNode) { }
-            else if (node is CompositeNode)
-            {
+            if (node.GetChildrenType() == GraphNode.ChildrenType.Single)
+                output = new GraphNodePort(Direction.Output, Port.Capacity.Single);
+            else if (node.GetChildrenType() == GraphNode.ChildrenType.Multiple)
                 output = new GraphNodePort(Direction.Output, Port.Capacity.Multi);
-            }
-            else if (node is DecoratorNode)
-            {
-                output = new GraphNodePort(Direction.Output, Port.Capacity.Single);
-            }
-            else*/ if (node is RootNode)
-            {
-                output = new GraphNodePort(Direction.Output, Port.Capacity.Single);
-            }
-
             if (output != null)
             {
                 output.portName = "";
@@ -136,12 +118,15 @@ namespace Reshape.ReGraph
             }
         }
 
-        public void SortChildren ()
+        public List<GraphNode> SortChildren ()
         {
-            /*if (node is CompositeNode composite)
+            if (node is RootNode root)
             {
-                composite.children.Sort(SortByHorizontalPosition);
-            }*/
+                List<GraphNode> sorted = root.children.ToList();
+                sorted.Sort(SortByHorizontalPosition);
+                return sorted;
+            }
+            return null;
         }
 
         private int SortByHorizontalPosition (GraphNode left, GraphNode right)
@@ -149,13 +134,24 @@ namespace Reshape.ReGraph
             return left.position.x < right.position.x ? -1 : 1;
         }
 
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            if (evt.target is GraphNodeView)
+            {
+                var nodeView = (GraphNodeView) evt.target;
+                if (nodeView.node is RootNode == false)
+                    evt = viewer.GetDeleteAction(evt);
+            }
+            base.BuildContextualMenu(evt);
+        }
+
         public void UpdateState ()
         {
-            RemoveFromClassList("running");
+            /*RemoveFromClassList("running");
             RemoveFromClassList("failure");
             RemoveFromClassList("success");
 
-            /*if (Application.isPlaying)
+            if (Application.isPlaying)
             {
                 switch (node.state)
                 {

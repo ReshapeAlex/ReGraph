@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
@@ -153,7 +154,6 @@ namespace Reshape.ReGraph
         public void DeleteNode (GraphNode node)
         {
             SerializedProperty nodesProperty = Nodes;
-
             for (int i = 0; i < nodesProperty.arraySize; ++i)
             {
                 var prop = nodesProperty.GetArrayElementAtIndex(i);
@@ -163,50 +163,48 @@ namespace Reshape.ReGraph
             }
         }
 
+        public void SortChildren (GraphNode node, List<GraphNode> sorted)
+        {
+            var nodeProperty = FindNode(Nodes, node);
+            for (var i = 0; i < sorted.Count; i++)
+            {
+                var childrenProperty = nodeProperty.FindPropertyRelative(sPropChildren);
+                if (childrenProperty != null)
+                {
+                    for (var j = 0; j < childrenProperty.arraySize; ++j)
+                    {
+                        var current = childrenProperty.GetArrayElementAtIndex(j);
+                        if (current.FindPropertyRelative(sPropGuid).stringValue == sorted[i].guid)
+                        {
+                            childrenProperty.MoveArrayElement(j, i);
+                            serializedObject.ApplyModifiedProperties();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         public void AddChild (GraphNode parent, GraphNode child)
         {
             var parentProperty = FindNode(Nodes, parent);
-
-            // RootNode, Decorator node
-            var childProperty = parentProperty.FindPropertyRelative(sPropChild);
-            if (childProperty != null)
-            {
-                childProperty.managedReferenceValue = child;
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
-
-            // Composite nodes
             var childrenProperty = parentProperty.FindPropertyRelative(sPropChildren);
             if (childrenProperty != null)
             {
                 SerializedProperty newChild = AppendArrayElement(childrenProperty);
                 newChild.managedReferenceValue = child;
                 serializedObject.ApplyModifiedProperties();
-                return;
             }
         }
 
         public void RemoveChild (GraphNode parent, GraphNode child)
         {
             var parentProperty = FindNode(Nodes, parent);
-
-            // RootNode, Decorator node
-            var childProperty = parentProperty.FindPropertyRelative(sPropChild);
-            if (childProperty != null)
-            {
-                childProperty.managedReferenceValue = null;
-                serializedObject.ApplyModifiedProperties();
-                return;
-            }
-
-            // Composite nodes
             var childrenProperty = parentProperty.FindPropertyRelative(sPropChildren);
             if (childrenProperty != null)
             {
                 DeleteNode(childrenProperty, child);
                 serializedObject.ApplyModifiedProperties();
-                return;
             }
         }
     }
