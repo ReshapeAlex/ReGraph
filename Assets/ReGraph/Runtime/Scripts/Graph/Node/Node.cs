@@ -7,9 +7,9 @@ namespace Reshape.ReGraph
     {
         public enum State
         {
-            Running,
-            Failure,
-            Success
+            Running = 1,
+            Failure = 50,
+            Success = 100
         }
 
         [HideIf("@GetType().ToString().Contains(\"RootNode\")")]

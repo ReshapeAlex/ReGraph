@@ -128,9 +128,10 @@ namespace Reshape.ReGraph
 
         public List<GraphNode> SortChildren ()
         {
-            if (node is RootNode root)
+            if (node is RootNode or TriggerNode or BehaviourNode)
             {
-                List<GraphNode> sorted = root.children.ToList();
+                var gNode = (GraphNode) node;
+                List<GraphNode> sorted = gNode.children.ToList();
                 sorted.Sort(SortByHorizontalPosition);
                 return sorted;
             }

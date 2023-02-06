@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45fe4305dd4f7441ab3d3d20fe25fbe5, type: 3}
-  m_Name: ReshapeActionNameList
+  m_Script: {fileID: 11500000, guid: 6aac9577c0e4548e5b604332feb06884, type: 3}
+  m_Name: Dodge
   m_EditorClassIdentifier: 
-  actionName:
-  - Fight
-  - Dodge
+  actionName: Dodge

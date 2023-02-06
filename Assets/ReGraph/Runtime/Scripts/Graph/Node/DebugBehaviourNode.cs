@@ -14,6 +14,7 @@ namespace Reshape.ReGraph
         protected override void OnStart (GraphExecution execution, int updateId)
         {
             ReDebug.Log("Graph Debug", message);
+            base.OnStart(execution, updateId);
         }
 
 #if UNITY_EDITOR

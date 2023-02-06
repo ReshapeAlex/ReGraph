@@ -5,12 +5,12 @@ namespace Reshape.ReGraph
     [System.Serializable]
     public class RootNode : GraphNode
     {
-        private static string VAR_CURRENT;
+        private string VAR_CURRENT;
 
         private void InitVariables ()
         {
             if (string.IsNullOrEmpty(VAR_CURRENT))
-                VAR_CURRENT = guid + VAR_CURRENT;
+                VAR_CURRENT = guid + "_current";
         }
         
         protected override void OnStart (GraphExecution execution, int updateId)
@@ -27,6 +27,7 @@ namespace Reshape.ReGraph
                 for (int i = current; i < children.Count; ++i)
                 {
                     current = i;
+                    execution.variables.SetInt(VAR_CURRENT, current);
                     var child = children[current];
                     if (child != null)
                     {
