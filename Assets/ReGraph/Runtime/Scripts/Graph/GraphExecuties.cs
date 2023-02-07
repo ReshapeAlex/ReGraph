@@ -20,11 +20,11 @@ namespace Reshape.ReGraph
             }
         }
         
-        public GraphExecution Add (long id)
+        public GraphExecution Add (long id, TriggerNode.Type triggerType)
         {
             if (executionList == null)
                 executionList = new List<GraphExecution>();
-            var execution = new GraphExecution(id);
+            var execution = new GraphExecution(id, triggerType);
             executionList.Add(execution);
             return execution;
         }

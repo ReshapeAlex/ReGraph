@@ -1,5 +1,6 @@
 using System;
 using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace Reshape.ReGraph
 {
@@ -14,10 +15,14 @@ namespace Reshape.ReGraph
         public GraphParameters parameters;
 
         private long executionId;
+        private TriggerNode.Type triggerType;
 
-        public GraphExecution (long id)
+        public TriggerNode.Type type => triggerType;
+        
+        public GraphExecution (long id, TriggerNode.Type type)
         {
             executionId = id;
+            triggerType = type;
             variables = new GraphVariables();
             parameters = new GraphParameters();
             state = Node.State.Running;

@@ -5,6 +5,16 @@ namespace Reshape.ReGraph
     [System.Serializable]
     public abstract class TriggerNode : GraphNode
     {
+        public enum Type
+        {
+            None,
+            CollisionEnter = 11,
+            CollisionExit = 12,
+            CollisionStepIn = 13,
+            CollisionStepOut = 14,
+            ActionTrigger = 21
+        }
+        
         private string childKey;
 
         private void InitVariables ()

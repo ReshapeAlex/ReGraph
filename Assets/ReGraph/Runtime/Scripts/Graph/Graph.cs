@@ -167,11 +167,11 @@ namespace Reshape.ReGraph
 
         public GraphContext Context => context;
 
-        public GraphExecution InitExecute (long id)
+        public GraphExecution InitExecute (long id, TriggerNode.Type triggerType)
         {
             if (!Created)
                 return null;
-            var execution = executes.Add(id);
+            var execution = executes.Add(id, triggerType);
             return execution;
         }
         

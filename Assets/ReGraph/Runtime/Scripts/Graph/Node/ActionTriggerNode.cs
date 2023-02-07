@@ -15,9 +15,31 @@ namespace Reshape.ReGraph
 
         protected override State OnUpdate (GraphExecution execution, int updateId)
         {
-            if (actionName != null)
-                if (execution.parameters.actionName.Equals(actionName))
-                    return base.OnUpdate(execution, updateId);
+            State state = execution.variables.GetState(guid, State.Running);
+            if (state == State.Running)
+            {
+                if (execution.type == Type.ActionTrigger)
+                {
+                    if (actionName != null && execution.parameters.actionName.Equals(actionName))
+                    {
+                        execution.variables.SetState(guid, State.Success);
+                        state = State.Success;
+                    }
+                    else
+                    {
+                        execution.variables.SetState(guid, State.Failure);
+                        state = State.Failure;
+                    }
+                }
+                else
+                {
+                    execution.variables.SetState(guid, State.Failure);
+                    state = State.Failure;
+                }
+            }
+            
+            if (state == State.Success)
+                return base.OnUpdate(execution, updateId);
             return State.Failure;
         }
 

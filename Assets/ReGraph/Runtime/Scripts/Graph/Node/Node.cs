@@ -53,7 +53,6 @@ namespace Reshape.ReGraph
             }
 
             State state = OnUpdate(execution, updateId);
-            execution.variables.SetState(guid, state);
 
             if (state != State.Running)
             {
@@ -63,7 +62,7 @@ namespace Reshape.ReGraph
 
             return state;
         }
-
+        
         public void Reset ()
         {
             OnReset();
