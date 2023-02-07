@@ -8,7 +8,7 @@ namespace Reshape.ReGraph
     public class GraphExecution
     {
         public Node.State state;
-
+        
         [HideLabel, BoxGroup("Variables")]
         public GraphVariables variables;
         [HideLabel, BoxGroup("Parameters")]
@@ -16,9 +16,11 @@ namespace Reshape.ReGraph
 
         private long executionId;
         private TriggerNode.Type triggerType;
-
-        public TriggerNode.Type type => triggerType;
         
+        [ShowInInspector]
+        [PropertyOrder(-1)]
+        public TriggerNode.Type type => triggerType;
+
         public GraphExecution (long id, TriggerNode.Type type)
         {
             executionId = id;

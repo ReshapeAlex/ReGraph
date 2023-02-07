@@ -853,26 +853,28 @@ MonoBehaviour:
     - rid: 416474255078458189
     - rid: 416474255078458194
     - rid: 416474255078458210
+    - rid: 416474280828338453
+    - rid: 416474280828338532
+    - rid: 416474280828338551
     executes:
       executionList: []
-    viewPosition: {x: 300, y: 200, z: 0}
+    viewPosition: {x: 298, y: 91, z: 0}
     viewScale: {x: 1, y: 1, z: 1}
     previewNode:
-      rid: -2
-    previewSelected: 0
+      rid: 416474280828338532
+    previewSelected: 1
     multipleSelectionWarning: Multiple Dialog Tree selected!
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 416474255078458172
       type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
         enabled: 1
         guid: bfe54dfe-5edb-4f1c-a401-6ac606c0f23e
         position: {x: 0, y: 0}
-        children: []
+        children:
+        - rid: 416474255078458194
         drawGizmos: 0
         dirty: 0
     - rid: 416474255078458189
@@ -880,7 +882,7 @@ MonoBehaviour:
       data:
         enabled: 1
         guid: 981ab0cbb2c484a41869916ebe5bf582
-        position: {x: 340, y: -9}
+        position: {x: 220, y: -51}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -891,10 +893,11 @@ MonoBehaviour:
         enabled: 1
         guid: c5fe05f4334ee44bdb287e3c69c701eb
         position: {x: 150, y: 206}
-        children: []
+        children:
+        - rid: 416474280828338453
         drawGizmos: 0
         dirty: 0
-        actionName: {fileID: 11400000, guid: 95f8ee0af7790458c9ba65be2577edf8, type: 2}
+        actionName: {fileID: 11400000, guid: 43f40daa8c9b4433187aabcde1567e8a, type: 2}
     - rid: 416474255078458210
       type: {class: CollisionTriggerNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
@@ -918,6 +921,53 @@ MonoBehaviour:
           bottomToTop: 1
           uniqueDetection: 0
         devNote: For Player
+    - rid: 416474280828338453
+      type: {class: EventBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 0
+        guid: efb8950d378b644cda03ddba3bc2f0f9
+        position: {x: 408, y: -51}
+        children:
+        - rid: 416474280828338532
+        drawGizmos: 0
+        dirty: 0
+        unityEvent:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 1864734883}
+              m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+    - rid: 416474280828338532
+      type: {class: ActionBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 92e147b14e97a4652b65edac49ddf548
+        position: {x: 466.16, y: 218}
+        children:
+        - rid: 416474280828338551
+        drawGizmos: 0
+        dirty: 0
+        graph: {fileID: 2019031690}
+        actionName: {fileID: 11400000, guid: 39a11f4b939ab4ff8af374d902bed8b9, type: 2}
+    - rid: 416474280828338551
+      type: {class: DebugBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 4e8c51e1b3b67492eb2ea80a6a7d9817
+        position: {x: 415, y: 408}
+        children: []
+        drawGizmos: 0
+        dirty: 0
+        message: IN
 --- !u!4 &1270257204
 Transform:
   m_ObjectHideFlags: 0
@@ -1060,12 +1110,14 @@ MonoBehaviour:
     viewPosition: {x: 300, y: 200, z: 0}
     viewScale: {x: 1, y: 1, z: 1}
     previewNode:
-      rid: 416474280828338414
-    previewSelected: 1
+      rid: -2
+    previewSelected: 0
     multipleSelectionWarning: Multiple Dialog Tree selected!
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 416474280828338412
       type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
@@ -1252,8 +1304,8 @@ MonoBehaviour:
     - rid: 416474255078458298
     executes:
       executionList: []
-    viewPosition: {x: 442, y: 90, z: 0}
-    viewScale: {x: 0.7561437, y: 0.7561437, z: 1}
+    viewPosition: {x: 343, y: 63, z: 0}
+    viewScale: {x: 1, y: 1, z: 1}
     previewNode:
       rid: -2
     previewSelected: 0

@@ -20,7 +20,7 @@ namespace Reshape.ReGraph
             {
                 if (execution.type == Type.ActionTrigger)
                 {
-                    if (actionName != null && execution.parameters.actionName.Equals(actionName))
+                    if (actionName != null && execution.parameters.actionName != null && execution.parameters.actionName.Equals(actionName))
                     {
                         execution.variables.SetState(guid, State.Success);
                         state = State.Success;

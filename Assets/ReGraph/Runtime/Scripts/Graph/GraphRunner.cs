@@ -43,7 +43,8 @@ namespace Reshape.ReGraph
 
         public void TriggerAction (ActionNameChoice type)
         {
-            Activate(TriggerNode.Type.ActionTrigger, actionName: type);
+            if (type != null)
+                Activate(TriggerNode.Type.ActionTrigger, actionName: type);
         }
         
         public void TriggerCollision (TriggerNode.Type type, GraphRunner runner)
@@ -112,9 +113,9 @@ namespace Reshape.ReGraph
 #if UNITY_EDITOR
         [Button]
         [ShowIf("ShowExecuteButton")]
-        private void Execute ()
+        private void Execute (string actionName)
         {
-            Activate(TriggerNode.Type.ActionTrigger, actionName: "Activate");
+            Activate(TriggerNode.Type.ActionTrigger, actionName: actionName);
         }
 
         private bool ShowExecuteButton ()
