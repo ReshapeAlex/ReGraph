@@ -167,11 +167,18 @@ namespace Reshape.ReGraph
 
         public GraphContext Context => context;
 
-        public void Execute (long id, int updateId)
+        public GraphExecution InitExecute (long id)
+        {
+            if (!Created)
+                return null;
+            var execution = executes.Add(id);
+            return execution;
+        }
+        
+        public void RunExecute (GraphExecution execution, int updateId)
         {
             if (!Created)
                 return;
-            var execution = executes.Add(id);
             execution.state = rootNode.Update(execution, updateId);
         }
 

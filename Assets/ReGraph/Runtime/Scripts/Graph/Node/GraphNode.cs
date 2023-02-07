@@ -8,6 +8,8 @@ namespace Reshape.ReGraph
     [HideReferenceObjectPicker]
     public abstract class GraphNode : Node
     {
+        public const string VAR_CHILD = "_child";
+        
         public enum ChildrenType
         {
             Single,
@@ -31,12 +33,14 @@ namespace Reshape.ReGraph
 
 #if UNITY_EDITOR
         [HideInInspector]
-        [TextArea]
-        public string description;
-        [HideInInspector]
         public bool drawGizmos = false;
         [HideInInspector]
-        public string nodeDisplayDescription;
+        public bool dirty;
+
+        private void MarkDirty ()
+        {
+            dirty = true;
+        }
 
         private bool ShowChildren ()
         {
@@ -47,6 +51,7 @@ namespace Reshape.ReGraph
         
         public abstract string GetNodeInspectorTitle ();
         public abstract string GetNodeViewTitle ();
+        public abstract string GetNodeViewDescription ();
 #endif
 
         public abstract ChildrenType GetChildrenType ();

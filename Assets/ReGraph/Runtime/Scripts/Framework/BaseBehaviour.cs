@@ -11,11 +11,6 @@ namespace Reshape.ReGraph
 	    {
 		    
 	    }
-	    
-	    public virtual void Activate(ActionNameChoice type)
-	    {
-        
-	    }
 
 	    public bool IsGameObjectMatch (GameObject go, string[] excludeTags, string[] excludeLayers, string[] onlyTags, string[] onlyLayers, string[] specificNames)
         {

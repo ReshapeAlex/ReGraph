@@ -16,10 +16,12 @@
 
 #input {
     align-items: center;
+    padding-top: 2px;
 }
 
 #output {
     align-items: center;
+    padding-bottom: 2px;
 }
 
 #selection-border {
@@ -82,6 +84,25 @@
     font-size: 10px;
     white-space: normal;
     max-width: 140px;
+    min-height: 38px;
+    -unity-text-align: middle-center;
+}
+
+#category {
+    -unity-text-align: middle-center;
+    color: black;
+    font-size: 10px;
+    max-height: 0px;
+    position: relative;
+    top: -9px;
+}
+
+#connectTo {
+    -unity-text-align: middle-center;
+    font-size: 10px;
+    max-height: 0px;
+    position: relative;
+    top: 7px;
 }
 
 #divider {
@@ -111,7 +132,7 @@
 
 .root #input {
     background-color: rgb(152, 206, 0);
-    min-height: 20px;
+    min-height: 26px;
 }
 
 #node-state {

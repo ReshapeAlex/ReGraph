@@ -5,29 +5,31 @@ namespace Reshape.ReGraph
     [System.Serializable]
     public class RootNode : GraphNode
     {
-        private string VAR_CURRENT;
+        public const string VAR_CURRENT = "_current";
+
+        private string currentKey;
 
         private void InitVariables ()
         {
-            if (string.IsNullOrEmpty(VAR_CURRENT))
-                VAR_CURRENT = guid + "_current";
+            if (string.IsNullOrEmpty(currentKey))
+                currentKey = guid + VAR_CURRENT;
         }
-        
+
         protected override void OnStart (GraphExecution execution, int updateId)
         {
             InitVariables();
-            execution.variables.SetInt(VAR_CURRENT, 0);
+            execution.variables.SetInt(currentKey, 0);
         }
 
         protected override State OnUpdate (GraphExecution execution, int updateId)
         {
             if (children != null)
             {
-                int current = execution.variables.GetInt(VAR_CURRENT);
+                int current = execution.variables.GetInt(currentKey);
                 for (int i = current; i < children.Count; ++i)
                 {
                     current = i;
-                    execution.variables.SetInt(VAR_CURRENT, current);
+                    execution.variables.SetInt(currentKey, current);
                     var child = children[current];
                     if (child != null)
                     {
@@ -43,6 +45,7 @@ namespace Reshape.ReGraph
                     }
                 }
             }
+
             return State.Failure;
         }
 
@@ -70,16 +73,13 @@ namespace Reshape.ReGraph
 #if UNITY_EDITOR
         public static string displayName = "Start Node";
         public static string nodeName = "Start";
+        public static string nodeDesc = "This is starting point of the graph";
 
-        public override string GetNodeInspectorTitle()
-        {
-            return displayName;
-        }
+        public override string GetNodeInspectorTitle() { return displayName; }
 
-        public override string GetNodeViewTitle()
-        {
-            return nodeName;
-        }
+        public override string GetNodeViewTitle() { return nodeName; }
+        
+        public override string GetNodeViewDescription () { return nodeDesc; }
 #endif
     }
 }

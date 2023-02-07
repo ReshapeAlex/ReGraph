@@ -250,7 +250,7 @@ namespace Reshape.ReGraph
             nodes.ForEach(n =>
             {
                 GraphNodeView view = n as GraphNodeView;
-                view.UpdateState();
+                view.Update();
             });
             if (serializer != null)
                 serializer.graph.selectedViewNode = selection;

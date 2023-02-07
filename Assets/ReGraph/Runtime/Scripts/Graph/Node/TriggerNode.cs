@@ -5,12 +5,12 @@ namespace Reshape.ReGraph
     [System.Serializable]
     public abstract class TriggerNode : GraphNode
     {
-        private string VAR_CHILD;
+        private string childKey;
 
         private void InitVariables ()
         {
-            if (string.IsNullOrEmpty(VAR_CHILD))
-                VAR_CHILD = guid + "_child";
+            if (string.IsNullOrEmpty(childKey))
+                childKey = guid + VAR_CHILD;
         }
 
         protected override void OnStart (GraphExecution execution, int updateId)
@@ -20,9 +20,9 @@ namespace Reshape.ReGraph
             for (var i = 0; i < children.Count; i++)
             {
                 if (children[i] == null)
-                    execution.variables.SetInt(VAR_CHILD + i, (int) State.Success);
+                    execution.variables.SetInt(childKey + i, (int) State.Success);
                 else
-                    execution.variables.SetInt(VAR_CHILD + i, (int) State.Running);
+                    execution.variables.SetInt(childKey + i, (int) State.Running);
             }
         }
 
@@ -34,11 +34,11 @@ namespace Reshape.ReGraph
             var containFailure = false;
             for (int i = 0; i < children.Count; ++i)
             {
-                var state = execution.variables.GetInt(VAR_CHILD + i);
+                var state = execution.variables.GetInt(childKey + i);
                 if (state == (int) State.Running)
                 {
                     var status = children[i].Update(execution, updateId);
-                    execution.variables.SetInt(VAR_CHILD + i, (int) status);
+                    execution.variables.SetInt(childKey + i, (int) status);
                     if (status == State.Failure)
                         containFailure = true;
                     else if (status == State.Running)

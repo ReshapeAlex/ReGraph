@@ -19,6 +19,8 @@ namespace Reshape.ReGraph
         public GraphViewer viewer;
         public Port input;
         public Port output;
+        
+        private Label descriptionLabel;
 
         public GraphNodeView (SerializedGraph tree, GraphNode node, GraphViewer viewer) : base(AssetDatabase.GetAssetPath(GraphSettings.GetSettings().graphNodeXml))
         {
@@ -48,10 +50,22 @@ namespace Reshape.ReGraph
         {
             var nodeProp = serializer.FindNode(serializer.Nodes, node);
 
-            var descriptionProp = nodeProp.FindPropertyRelative("nodeDisplayDescription");
+            descriptionLabel = this.Q<Label>("description");
+            descriptionLabel.text = node.GetNodeViewDescription();
 
-            Label descriptionLabel = this.Q<Label>("description");
-            descriptionLabel.BindProperty(descriptionProp);
+            Label categoryLabel = this.Q<Label>("category");
+            if (node is TriggerNode)
+                categoryLabel.text = "Trigger";
+            else if (node is BehaviourNode)
+                categoryLabel.text = "Behaviour";
+            
+            Label connectLabel = this.Q<Label>("connectTo");
+            if (node is RootNode)
+                connectLabel.text = "Trigger";
+            else if (node is TriggerNode)
+                connectLabel.text = "Behaviour";
+            else if (node is BehaviourNode)
+                connectLabel.text = "Behaviour";
 
             this.node.onEnableChange -= OnEnableChange;
             this.node.onEnableChange += OnEnableChange;
@@ -156,6 +170,16 @@ namespace Reshape.ReGraph
             }
 
             base.BuildContextualMenu(evt);
+        }
+
+        public void Update ()
+        {
+            if (node.dirty)
+            {
+                descriptionLabel.text = node.GetNodeViewDescription();
+                node.dirty = false;
+            }
+            UpdateState();
         }
 
         public void UpdateState ()

@@ -16,6 +16,11 @@ namespace Reshape.ReGraph
         {
             return nodeName;
         }
+        
+        public override string GetNodeViewDescription ()
+        {
+            return string.Empty;
+        }
 #endif
     }
 }

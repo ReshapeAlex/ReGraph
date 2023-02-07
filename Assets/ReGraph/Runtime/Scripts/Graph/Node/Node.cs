@@ -19,6 +19,7 @@ namespace Reshape.ReGraph
         
         [ShowIf("showAdvanceSettings"), BoxGroup("Show Debug Info")]
         [ReadOnly]
+        [PropertyOrder(-50)]
         public string guid = System.Guid.NewGuid().ToString();
 
 #if UNITY_EDITOR

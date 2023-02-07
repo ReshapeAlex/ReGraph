@@ -10,6 +10,8 @@ namespace Reshape.ReGraph
 
         [HideLabel, BoxGroup("Variables")]
         public GraphVariables variables;
+        [HideLabel, BoxGroup("Parameters")]
+        public GraphParameters parameters;
 
         private long executionId;
 
@@ -17,6 +19,7 @@ namespace Reshape.ReGraph
         {
             executionId = id;
             variables = new GraphVariables();
+            parameters = new GraphParameters();
             state = Node.State.Running;
         }
     }
