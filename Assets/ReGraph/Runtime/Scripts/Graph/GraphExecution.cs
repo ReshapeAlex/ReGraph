@@ -16,7 +16,8 @@ namespace Reshape.ReGraph
 
         private long executionId;
         private TriggerNode.Type triggerType;
-        
+
+        public long id => executionId;
         [ShowInInspector]
         [PropertyOrder(-1)]
         public TriggerNode.Type type => triggerType;

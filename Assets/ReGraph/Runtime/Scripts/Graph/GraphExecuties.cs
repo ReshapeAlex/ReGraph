@@ -37,6 +37,18 @@ namespace Reshape.ReGraph
                 return null;
             return executionList[index];
         }
+        
+        public GraphExecution Find (long id)
+        {
+            if (executionList == null)
+                return null;
+            for (int i = 0; i < executionList.Count; i++)
+            {
+                if (id == executionList[i].id)
+                    return executionList[i];
+            }
+            return null;
+        }
 
         public void Clear ()
         {

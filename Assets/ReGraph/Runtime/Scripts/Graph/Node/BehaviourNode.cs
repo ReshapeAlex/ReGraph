@@ -16,10 +16,10 @@ namespace Reshape.ReGraph
 
         protected override void OnStart (GraphExecution execution, int updateId)
         {
-            Start(execution, updateId);
+            ExecuteStart(execution, updateId);
         }
 
-        private void Start (GraphExecution execution, int updateId)
+        private void ExecuteStart (GraphExecution execution, int updateId)
         {
             if (children == null) return;
             InitVariables();
@@ -34,10 +34,10 @@ namespace Reshape.ReGraph
 
         protected override State OnUpdate (GraphExecution execution, int updateId)
         {
-            return Update(execution, updateId);
+            return ExecuteUpdate(execution, updateId);
         }
 
-        private State Update (GraphExecution execution, int updateId)
+        private State ExecuteUpdate (GraphExecution execution, int updateId)
         {
             if (children == null) return State.Success;
 
@@ -77,11 +77,11 @@ namespace Reshape.ReGraph
             bool started = execution.variables.GetStarted(guid, false);
             if (!started)
             {
-                Start(execution, updateId);
+                ExecuteStart(execution, updateId);
                 execution.variables.SetStarted(guid, true);
             }
 
-            return OnUpdate(execution, updateId);
+            return ExecuteUpdate(execution, updateId);
         }
 
         public override ChildrenType GetChildrenType ()

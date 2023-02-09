@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -82,7 +83,15 @@ namespace Reshape.ReGraph
             }
             else
             {
-                Create();
+                var found = Object.FindObjectOfType<GraphManager>();
+                if (found == null)
+                {
+                    EditorUtility.DisplayDialog("Create Graph", "Please add Graph Manager to your scene before click on Create Graph button", "OK");
+                }
+                else
+                {
+                    Create();
+                }
             }
         }
 
@@ -152,13 +161,13 @@ namespace Reshape.ReGraph
         public GraphType Type => type;
 
         public bool Created => rootNode != null;
-        
+
         public void Create ()
         {
             rootNode = new RootNode();
             nodes.Add(rootNode);
         }
-        
+
         public void Bind (GraphContext c)
         {
             context = c;
@@ -174,12 +183,21 @@ namespace Reshape.ReGraph
             var execution = executes.Add(id, triggerType);
             return execution;
         }
-        
+
         public void RunExecute (GraphExecution execution, int updateId)
         {
             if (!Created)
                 return;
             execution.state = rootNode.Update(execution, updateId);
+        }
+
+        public void ResumeExecute (long executionId, int updateId)
+        {
+            if (!Created)
+                return;
+            var execution = executes.Find(executionId);
+            if (execution != null)
+                execution.state = rootNode.Update(execution, updateId);
         }
 
         public void Update (int updateId)

@@ -174,7 +174,7 @@ namespace Reshape.ReGraph
 
         public void Update ()
         {
-            if (node.dirty)
+            if (node != null && node.dirty)
             {
                 descriptionLabel.text = node.GetNodeViewDescription();
                 node.dirty = false;

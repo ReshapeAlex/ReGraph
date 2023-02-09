@@ -40,3 +40,6 @@ MonoBehaviour:
   - Destroy
   - Update
   - Cancel
+  - Init
+  - Uninit
+  - Tick

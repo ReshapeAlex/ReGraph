@@ -52,6 +52,11 @@ namespace Reshape.ReGraph
             OnTrigger(type, runner.gameObject);
         }
 
+        public void ResumeTrigger (long executionId, int updateId)
+        {
+            graph?.ResumeExecute(executionId, Time.frameCount);
+        }
+
         protected override void Start ()
         {
             context = new GraphContext(this);
@@ -108,6 +113,54 @@ namespace Reshape.ReGraph
         private void OnTrigger(TriggerNode.Type t, GameObject go)
         {
             Activate(t, interactedGo:go);
+        }
+        
+        private void Enable(string reid)
+        {
+            /*if (!runEvenDisabled)
+            {
+                int count = nodes.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    if (string.IsNullOrEmpty(reid) || reid == nodes[i].reid)
+                    {
+                        nodes[i].enabled = true;
+                        break;
+                    }
+                }
+            }   */         
+        }
+        
+        private void Disable(string reid)
+        {
+            /*if (!runEvenDisabled)
+            {
+                int count = nodes.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    if (string.IsNullOrEmpty(reid) || reid == nodes[i].reid)
+                    {
+                        nodes[i].enabled = false;
+                        break;
+                    }
+                }
+            }   */         
+        }
+
+        private void Deactivate(string reid)
+        {
+            /*if (!runEvenDisabled)
+            {
+                int count = nodes.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    if (string.IsNullOrEmpty(reid) || reid == nodes[i].reid)
+                    {
+                        nodes[i].TriggerDeactivate(reid);
+                        break;
+                    }
+                }
+            }  */          
         }
 
 #if UNITY_EDITOR
