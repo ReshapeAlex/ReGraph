@@ -247,13 +247,42 @@ namespace Reshape.ReGraph
 
         public void UpdateNodeStates ()
         {
+            if (serializer != null)
+                serializer.graph.selectedViewNode = selection;
             nodes.ForEach(n =>
             {
                 GraphNodeView view = n as GraphNodeView;
                 view.Update();
             });
-            if (serializer != null)
-                serializer.graph.selectedViewNode = selection;
+        }
+
+        public void HighlightReferenceNode (string nodeId)
+        {
+            nodes.ForEach(n =>
+            {
+                GraphNodeView view = n as GraphNodeView;
+                if (view.node != null && view.node.guid == nodeId)
+                    view.ApplyRunningHighlight();
+            });
+        }
+        
+        public void UnhighlightReferenceNode (string nodeId)
+        {
+            nodes.ForEach(n =>
+            {
+                GraphNodeView view = n as GraphNodeView;
+                if (view.node != null && view.node.guid == nodeId)
+                    view.UnapplyRunningHighlight();
+            });
+        }
+        
+        public void UnhighlightAllReferenceNode ()
+        {
+            nodes.ForEach(n =>
+            {
+                GraphNodeView view = n as GraphNodeView;
+                view.UnapplyRunningHighlight();
+            });
         }
     }
 }

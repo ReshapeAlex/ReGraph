@@ -305,6 +305,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &382285730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 382285731}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &382285731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382285730}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.5496674, y: 4.400158, z: 3.979889}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &627531853
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,6 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runEvenInactive: 0
   runEvenDisabled: 0
+  stopOnDeactivate: 0
   graph:
     type: 10
     rootNode:
@@ -369,6 +401,7 @@ MonoBehaviour:
         enabled: 1
         guid: 53b86f8a-d8ab-4f72-805f-a516ba8fd36e
         position: {x: -23, y: -30}
+        runner: {fileID: 627531854}
         children:
         - rid: 7313416294501974943
         - rid: 7313416294501974942
@@ -382,6 +415,7 @@ MonoBehaviour:
         enabled: 1
         guid: 7f68e7c574ff34a2ca888d04cc297979
         position: {x: 127.00001, y: 125}
+        runner: {fileID: 627531854}
         children:
         - rid: 7313416294501974945
         drawGizmos: 0
@@ -406,6 +440,7 @@ MonoBehaviour:
         enabled: 1
         guid: 1afba879bc3674d2eb8d99cb4aade0bf
         position: {x: -173.00003, y: 125}
+        runner: {fileID: 627531854}
         children:
         - rid: -2
         drawGizmos: 0
@@ -430,6 +465,7 @@ MonoBehaviour:
         enabled: 1
         guid: efceebe4537644515a8ccc51bdfc6dbf
         position: {x: -98, y: 284}
+        runner: {fileID: 627531854}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -440,6 +476,7 @@ MonoBehaviour:
         enabled: 1
         guid: 9efcec3e7e0cd46d7a6306aecb5d8e07
         position: {x: 202, y: 284}
+        runner: {fileID: 627531854}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -450,6 +487,7 @@ MonoBehaviour:
         enabled: 1
         guid: 5b3ddc1ca101041ecac041d514f9e5f7
         position: {x: 339, y: 125}
+        runner: {fileID: 627531854}
         children:
         - rid: 7313416294501974973
         drawGizmos: 0
@@ -474,6 +512,7 @@ MonoBehaviour:
         enabled: 1
         guid: 15d5bdd9e38504b719f6a71f863f7bc3
         position: {x: 414, y: 284}
+        runner: {fileID: 627531854}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -522,12 +561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6debaeaa6b647b6b316ee4e308ae64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initActions:
-  - runner: {fileID: 2019031690}
-    actionName: {fileID: 11400000, guid: 39a11f4b939ab4ff8af374d902bed8b9, type: 2}
-  beginActions:
-  - runner: {fileID: 2019031690}
-    actionName: {fileID: 11400000, guid: 17c11fbeaa9754f5b90724ec58440afa, type: 2}
+  initActions: []
+  beginActions: []
   tickActions: []
   uninitActions: []
 --- !u!4 &681153380
@@ -896,6 +931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runEvenInactive: 0
   runEvenDisabled: 0
+  stopOnDeactivate: 0
   graph:
     type: 10
     rootNode:
@@ -912,14 +948,16 @@ MonoBehaviour:
     - rid: 416474280828338743
     - rid: 416474280828338832
     - rid: 416474280828338853
+    - rid: 416474350118764544
+    - rid: 416474350118764641
     executes:
       executionList: []
-    viewPosition: {x: 188, y: 134, z: 0}
-    viewScale: {x: 0.8695652, y: 0.8695652, z: 1}
+    viewPosition: {x: 347, y: 222, z: 0}
+    viewScale: {x: 1, y: 1, z: 1}
     previewNode:
       rid: -2
     previewSelected: 0
-    multipleSelectionWarning: Multiple Dialog Tree selected!
+    multipleSelectionWarning: Multiple Graph Nodes Selected!
   references:
     version: 2
     RefIds:
@@ -930,9 +968,11 @@ MonoBehaviour:
       data:
         enabled: 1
         guid: bfe54dfe-5edb-4f1c-a401-6ac606c0f23e
-        position: {x: -32, y: 20}
+        position: {x: -35, y: 35}
+        runner: {fileID: 1270257203}
         children:
         - rid: 416474255078458194
+        - rid: 416474255078458210
         - rid: 416474280828338742
         drawGizmos: 0
         dirty: 0
@@ -941,7 +981,8 @@ MonoBehaviour:
       data:
         enabled: 1
         guid: 981ab0cbb2c484a41869916ebe5bf582
-        position: {x: 220, y: -51}
+        position: {x: 22.94751, y: -123.00007}
+        runner: {fileID: 1270257203}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -952,6 +993,7 @@ MonoBehaviour:
         enabled: 1
         guid: c5fe05f4334ee44bdb287e3c69c701eb
         position: {x: -281.24, y: 246}
+        runner: {fileID: 1270257203}
         children:
         - rid: 416474280828338453
         drawGizmos: 0
@@ -962,7 +1004,8 @@ MonoBehaviour:
       data:
         enabled: 1
         guid: a6a1a643f3aab4f3bbfda2b8827a8fed
-        position: {x: -281, y: 31}
+        position: {x: -250, y: 35}
+        runner: {fileID: 1270257203}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -985,9 +1028,10 @@ MonoBehaviour:
       data:
         enabled: 1
         guid: efb8950d378b644cda03ddba3bc2f0f9
-        position: {x: 415, y: -51}
+        position: {x: 415, y: -61.880005}
+        runner: {fileID: 1270257203}
         children:
-        - rid: 416474280828338832
+        - rid: 416474350118764544
         - rid: 416474280828338853
         drawGizmos: 0
         dirty: 0
@@ -1006,12 +1050,14 @@ MonoBehaviour:
                 m_StringArgument: 
                 m_BoolArgument: 0
               m_CallState: 2
+        devNote: 
     - rid: 416474280828338532
       type: {class: ActionBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
         enabled: 1
         guid: 92e147b14e97a4652b65edac49ddf548
-        position: {x: 466.16, y: 218}
+        position: {x: 452, y: 263}
+        runner: {fileID: 1270257203}
         children:
         - rid: 416474280828338551
         drawGizmos: 0
@@ -1023,8 +1069,10 @@ MonoBehaviour:
       data:
         enabled: 1
         guid: 4e8c51e1b3b67492eb2ea80a6a7d9817
-        position: {x: 415, y: 408}
-        children: []
+        position: {x: 401, y: 453}
+        runner: {fileID: 1270257203}
+        children:
+        - rid: 416474350118764641
         drawGizmos: 0
         dirty: 0
         message: IN
@@ -1034,6 +1082,7 @@ MonoBehaviour:
         enabled: 1
         guid: e87753b96723a4f7792a1b026b37ef9f
         position: {x: 70, y: 279}
+        runner: {fileID: 1270257203}
         children:
         - rid: 416474280828338743
         drawGizmos: 0
@@ -1045,6 +1094,7 @@ MonoBehaviour:
         enabled: 1
         guid: 2caf890f21a584d01916c1047881cf34
         position: {x: 130, y: 450}
+        runner: {fileID: 1270257203}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1054,22 +1104,49 @@ MonoBehaviour:
       data:
         enabled: 1
         guid: 59ff50292c3174eeda0e5c12f1076290
-        position: {x: 265, y: 157}
+        position: {x: 251, y: 202}
+        runner: {fileID: 1270257203}
         children:
         - rid: 416474280828338532
         drawGizmos: 0
         dirty: 0
-        time: 2
+        time: 3
     - rid: 416474280828338853
       type: {class: WaitBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
         enabled: 1
         guid: a61c06818102845c0a25be67b9f3ae02
         position: {x: 650.31995, y: 71}
+        runner: {fileID: 1270257203}
         children: []
         drawGizmos: 0
         dirty: 0
         time: 0
+    - rid: 416474350118764544
+      type: {class: TriggerBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: cf6555ec73b7342e6b580863095dacc3
+        position: {x: 220, y: -184}
+        runner: {fileID: 1270257203}
+        children:
+        - rid: 416474280828338832
+        drawGizmos: 0
+        dirty: 0
+        triggerNode: c5fe05f4334ee44bdb287e3c69c701eb
+        executionType: 1
+    - rid: 416474350118764641
+      type: {class: TriggerBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 0eb24c20c6e8a4747a0a77e1eeb85d5b
+        position: {x: 585, y: 513}
+        runner: {fileID: 1270257203}
+        children: []
+        drawGizmos: 0
+        dirty: 0
+        triggerNode: a6a1a643f3aab4f3bbfda2b8827a8fed
+        executionType: 0
 --- !u!4 &1270257204
 Transform:
   m_ObjectHideFlags: 0
@@ -1199,6 +1276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runEvenInactive: 0
   runEvenDisabled: 0
+  stopOnDeactivate: 0
   graph:
     type: 10
     rootNode:
@@ -1226,6 +1304,7 @@ MonoBehaviour:
         enabled: 1
         guid: 690feebc-2955-41d4-82fc-6bcfc96e8fde
         position: {x: 0, y: 0}
+        runner: {fileID: 0}
         children:
         - rid: 416474280828338413
         drawGizmos: 0
@@ -1236,6 +1315,7 @@ MonoBehaviour:
         enabled: 1
         guid: f96bb184c669049e3bfbd4fc8b1961ad
         position: {x: 175, y: 94}
+        runner: {fileID: 0}
         children:
         - rid: 416474280828338414
         drawGizmos: 0
@@ -1260,6 +1340,7 @@ MonoBehaviour:
         enabled: 1
         guid: ce8f58baea7b0419da3d67f3c6b65fed
         position: {x: 281, y: 268}
+        runner: {fileID: 0}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1384,6 +1465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runEvenInactive: 0
   runEvenDisabled: 0
+  stopOnDeactivate: 0
   graph:
     type: 10
     rootNode:
@@ -1406,7 +1488,7 @@ MonoBehaviour:
     - rid: 416474255078458298
     executes:
       executionList: []
-    viewPosition: {x: 387, y: 32, z: 0}
+    viewPosition: {x: 367, y: 122, z: 0}
     viewScale: {x: 1, y: 1, z: 1}
     previewNode:
       rid: -2
@@ -1423,6 +1505,7 @@ MonoBehaviour:
         enabled: 1
         guid: b40a4130-5ef9-4588-90b3-5fd7e7215822
         position: {x: 0, y: 0}
+        runner: {fileID: 2019031690}
         children:
         - rid: 416474255078457438
         - rid: 416474255078458297
@@ -1436,6 +1519,7 @@ MonoBehaviour:
         enabled: 1
         guid: d92c300a971b74cccbd870e5cdfd661b
         position: {x: -15, y: 191}
+        runner: {fileID: 2019031690}
         children:
         - rid: 416474191367504844
         - rid: 416474191367504845
@@ -1461,6 +1545,7 @@ MonoBehaviour:
         enabled: 1
         guid: d92c89d6348a24acaa21f8b2fffca1e9
         position: {x: 165, y: 191}
+        runner: {fileID: 2019031690}
         children:
         - rid: 416474191367504846
         drawGizmos: 0
@@ -1485,6 +1570,7 @@ MonoBehaviour:
         enabled: 1
         guid: 6874bc671387041d9aaf166137cd84b5
         position: {x: -15, y: 353}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1495,6 +1581,7 @@ MonoBehaviour:
         enabled: 1
         guid: fbd6876a657ec47059e5501a1c2761fe
         position: {x: 166, y: 353}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1505,6 +1592,7 @@ MonoBehaviour:
         enabled: 1
         guid: c43b74dd117254d4a945f4d3793f3016
         position: {x: 345, y: 353}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1515,6 +1603,7 @@ MonoBehaviour:
         enabled: 1
         guid: 23237bd9e39f648b69967ac9a9496f86
         position: {x: 0, y: 531}
+        runner: {fileID: 2019031690}
         children:
         - rid: 416474255078457417
         drawGizmos: 0
@@ -1526,6 +1615,7 @@ MonoBehaviour:
         enabled: 1
         guid: ab7540373ae20415198f1f1ebfc7adfb
         position: {x: 206, y: 530}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1536,6 +1626,7 @@ MonoBehaviour:
         enabled: 1
         guid: 88414874416eb43f19cef7b2cdbb7805
         position: {x: 16, y: 733}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1546,6 +1637,7 @@ MonoBehaviour:
         enabled: 1
         guid: 88662cce08fc1459eb34301601f48fe9
         position: {x: 389, y: 531}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1556,6 +1648,7 @@ MonoBehaviour:
         enabled: 1
         guid: c57e55381ef3847cfb0fb983aab39957
         position: {x: -326.15, y: 191}
+        runner: {fileID: 2019031690}
         children:
         - rid: 416474255078457604
         drawGizmos: 0
@@ -1567,6 +1660,7 @@ MonoBehaviour:
         enabled: 1
         guid: a9e336b72b5724a05b0a6f32ab6e8fd2
         position: {x: -326.99994, y: 352.99997}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1577,6 +1671,7 @@ MonoBehaviour:
         enabled: 1
         guid: 7ab631b4a4e5b4bef8cbb9f485ecc8ee
         position: {x: 179.88, y: 0}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0
@@ -1587,6 +1682,7 @@ MonoBehaviour:
         enabled: 1
         guid: 92879007f53b64b28b963c902d0f1916
         position: {x: -176.99998, y: 190.99994}
+        runner: {fileID: 2019031690}
         children:
         - rid: 416474255078458298
         drawGizmos: 0
@@ -1598,6 +1694,7 @@ MonoBehaviour:
         enabled: 1
         guid: a15512746d5f44422a69e23c1aa89573
         position: {x: -177.00005, y: 353.00006}
+        runner: {fileID: 2019031690}
         children: []
         drawGizmos: 0
         dirty: 0

@@ -53,6 +53,20 @@ namespace Reshape.ReGraph
 
         protected override void OnReset () { }
 
+        protected override void OnPause (GraphExecution execution)
+        {
+            if (children != null)
+                for (int i = 0; i < children.Count; ++i)
+                    children[i].Pause(execution);
+        }
+        
+        protected override void OnUnpause (GraphExecution execution)
+        {
+            if (children != null)
+                for (int i = 0; i < children.Count; ++i)
+                    children[i].Unpause(execution);
+        }
+
         protected override State OnDisabled (GraphExecution execution, int updateId)
         {
             return OnUpdate(execution, updateId);
@@ -68,6 +82,11 @@ namespace Reshape.ReGraph
             if (children != null)
                 for (var i = 0; i < children.Count; i++)
                     list.Add(children[i]);
+        }
+
+        public override bool IsRequireUpdate ()
+        {
+            return false;
         }
 
 #if UNITY_EDITOR

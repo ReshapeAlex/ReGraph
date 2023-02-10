@@ -7,6 +7,7 @@ namespace Reshape.ReGraph
     public class SerializedGraph
     {
         readonly public SerializedObject serializedObject;
+        readonly public GraphRunner runner;
         readonly public Graph graph;
 
         const string sPropRootNode = "graph.rootNode";
@@ -49,8 +50,8 @@ namespace Reshape.ReGraph
         public SerializedGraph (SerializedObject tree)
         {
             serializedObject = tree;
-            GraphRunner runner = serializedObject.targetObject as GraphRunner;
-            this.graph = runner.graph;
+            runner = serializedObject.targetObject as GraphRunner;
+            graph = runner.graph;
             nodes = null;
         }
 
@@ -155,6 +156,7 @@ namespace Reshape.ReGraph
         {
             GraphNode node = CreateNodeInstance(type);
             node.position = position;
+            node.runner = runner;
 
             SerializedProperty newNode = AppendArrayElement(Nodes);
             newNode.managedReferenceValue = node;

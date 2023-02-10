@@ -9,6 +9,7 @@ namespace Reshape.ReGraph
         {
             Running = 1,
             Failure = 50,
+            Stop = 60,
             Success = 100
         }
 
@@ -25,6 +26,8 @@ namespace Reshape.ReGraph
 #if UNITY_EDITOR
         [HideInInspector]
         public Vector2 position;
+        [HideInInspector]
+        public GraphRunner runner;
 
         public delegate void NodeDelegate ();
         public event NodeDelegate onEnableChange;
@@ -68,11 +71,23 @@ namespace Reshape.ReGraph
             OnReset();
         }
 
+        public void Pause (GraphExecution execution)
+        {
+            OnPause(execution);
+        }
+        
+        public void Unpause (GraphExecution execution)
+        {
+            OnUnpause(execution);
+        }
+
 #if UNITY_EDITOR
         public virtual void OnDrawGizmos () { }
 #endif
 
         protected abstract void OnReset ();
+        protected abstract void OnPause (GraphExecution execution);
+        protected abstract void OnUnpause (GraphExecution execution);
         protected abstract void OnStart (GraphExecution execution, int updateId);
         protected abstract void OnStop (GraphExecution execution, int updateId);
         protected abstract State OnDisabled (GraphExecution execution, int updateId);

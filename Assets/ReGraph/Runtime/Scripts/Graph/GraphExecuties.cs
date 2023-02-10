@@ -49,6 +49,16 @@ namespace Reshape.ReGraph
             }
             return null;
         }
+        
+        public void Stop ()
+        {
+            if (executionList == null)
+                return;
+            for (int i = 0; i < executionList.Count; i++)
+            {
+                executionList[i].Stop();
+            }
+        }
 
         public void Clear ()
         {

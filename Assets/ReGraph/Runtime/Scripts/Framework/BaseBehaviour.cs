@@ -62,6 +62,8 @@ namespace Reshape.ReGraph
 	    [SpecialName] public override void Uninit() { base.Uninit(); }
 	    [SpecialName] public override void PostUninit() { base.PostUninit(); }
 	    [SpecialName] public override void CancelWait(string id) { base.CancelWait(id); }
+	    [SpecialName] public override void StopWait(string id) { base.StopWait(id); }
+	    [SpecialName] public override void ResumeWait(string id) { base.ResumeWait(id); }
 	    [SpecialName] public override void ClearPool(string type) { base.ClearPool(type); }
 	    [SpecialName] public override void Forget(string key) { base.Forget(key); }
 	    [SpecialName] public override void Forget(int key) { base.Forget(key); }

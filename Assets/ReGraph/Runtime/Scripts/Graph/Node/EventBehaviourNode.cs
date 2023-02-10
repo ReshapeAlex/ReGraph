@@ -9,6 +9,7 @@ namespace Reshape.ReGraph
     [System.Serializable]
     public class EventBehaviourNode : BehaviourNode
     {
+        [PropertyOrder(2)]
         [OnValueChanged("MarkDirty")]
         public UnityEvent unityEvent;
         
@@ -22,6 +23,11 @@ namespace Reshape.ReGraph
         }
 
 #if UNITY_EDITOR
+        [PropertyOrder(1)]
+        [OnValueChanged("MarkDirty")]
+        [Tooltip("Only use in Graph Editor")]
+        public string devNote;
+
         public static string displayName = "Event Behaviour Node";
         public static string nodeName = "Event";
 
@@ -38,7 +44,15 @@ namespace Reshape.ReGraph
         public override string GetNodeViewDescription ()
         {
             if (unityEvent != null)
-                return "Contain "+unityEvent.GetPersistentEventCount()+" unity events";
+            {
+                if (!string.IsNullOrEmpty(devNote))
+                    return "Contain "+unityEvent.GetPersistentEventCount()+" unity events" + "\\n" + devNote;
+                else
+                    return "Contain "+unityEvent.GetPersistentEventCount()+" unity events";
+            }
+                
+            if (!string.IsNullOrEmpty(devNote))
+                return devNote;
             return string.Empty;
         }
 #endif

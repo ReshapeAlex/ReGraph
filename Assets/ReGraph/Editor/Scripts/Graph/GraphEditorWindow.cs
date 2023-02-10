@@ -141,8 +141,7 @@ namespace Reshape.ReGraph
             }
             
             serializer = new SerializedGraph(runnerObj);
-            serializer.SetViewPreviewNode(null);
-            serializer.SetViewPreviewSelected(false);
+            ResetViewPreviewNode();
             
             //overlayView.Hide();
             if (treeView != null)
@@ -154,8 +153,7 @@ namespace Reshape.ReGraph
         {
             if (serializer != null)
             {
-                serializer.SetViewPreviewNode(null);
-                serializer.SetViewPreviewSelected(false);
+                ResetViewPreviewNode();
                 serializer = null;
             }
             //overlayView.Show();
@@ -168,8 +166,7 @@ namespace Reshape.ReGraph
         {
             if (serializer != null && serializer.graph != null && node != null)
             {
-                serializer.SetViewPreviewNode(node.node);
-                serializer.SetViewPreviewSelected(true);
+                AssignViewPreviewNode(node.node);
                 //RepaintInspector("UnityEditor.GameObjectInspector");
             }
             //inspectorView.UpdateSelection(serializer, node);
@@ -179,10 +176,21 @@ namespace Reshape.ReGraph
         {
             if (serializer != null)
             {
-                serializer.SetViewPreviewNode(null);
-                serializer.SetViewPreviewSelected(false);
+                ResetViewPreviewNode();
                 //RepaintInspector("UnityEditor.GameObjectInspector");
             }
+        }
+
+        private void ResetViewPreviewNode ()
+        {
+            serializer.SetViewPreviewNode(null);
+            serializer.SetViewPreviewSelected(false);
+        }
+        
+        private void AssignViewPreviewNode (GraphNode node)
+        {
+            serializer.SetViewPreviewNode(node);
+            serializer.SetViewPreviewSelected(true);
         }
         
         private void OnInspectorUpdate()
@@ -207,10 +215,14 @@ namespace Reshape.ReGraph
                         {
                             GraphNodeView nodeView = runner.graph.selectedViewNode[0] as GraphNodeView;
                             if (nodeView != null)
-                            {
-                                serializer.SetViewPreviewNode(nodeView.node);
-                                serializer.SetViewPreviewSelected(true);
-                            }
+                                AssignViewPreviewNode(nodeView.node);
+                        }
+                    }
+                    else
+                    {
+                        if (serializer != null && serializer.graph != null)
+                        {
+                            ClearSelection();
                         }
                     }
                 }

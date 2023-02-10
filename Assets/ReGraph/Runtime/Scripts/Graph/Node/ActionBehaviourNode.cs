@@ -14,7 +14,7 @@ namespace Reshape.ReGraph
         [OnValueChanged("MarkDirty")]
         private GraphRunner graph;
         [SerializeField]
-        [ValueDropdown("DrawActionName1ListDropdown", ExpandAllMenuItems = true)]
+        [ValueDropdown("DrawActionNameListDropdown", ExpandAllMenuItems = true)]
         [OnValueChanged("MarkDirty")]
         private ActionNameChoice actionName;
         
@@ -28,7 +28,7 @@ namespace Reshape.ReGraph
         }
 
 #if UNITY_EDITOR
-        private static IEnumerable DrawActionName1ListDropdown ()
+        private static IEnumerable DrawActionNameListDropdown ()
         {
             return ActionNameChoice.GetActionNameListDropdown();
         }

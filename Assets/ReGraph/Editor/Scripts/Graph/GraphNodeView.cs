@@ -19,7 +19,7 @@ namespace Reshape.ReGraph
         public GraphViewer viewer;
         public Port input;
         public Port output;
-        
+
         private Label descriptionLabel;
 
         public GraphNodeView (SerializedGraph tree, GraphNode node, GraphViewer viewer) : base(AssetDatabase.GetAssetPath(GraphSettings.GetSettings().graphNodeXml))
@@ -33,7 +33,7 @@ namespace Reshape.ReGraph
                 viewDataKey = node.guid;
                 style.left = node.position.x;
                 style.top = node.position.y;
-                
+
                 CreateInputPorts();
                 CreateOutputPorts();
                 SetupClasses();
@@ -42,7 +42,7 @@ namespace Reshape.ReGraph
             else
             {
                 GraphRunner runner = serializer.serializedObject.targetObject as GraphRunner;
-                ReDebug.LogWarning("Graph Editor","System found a null graph node inside "+runner.gameObject.name, false);
+                ReDebug.LogWarning("Graph Editor", "System found a null graph node inside " + runner.gameObject.name, false);
             }
         }
 
@@ -58,7 +58,7 @@ namespace Reshape.ReGraph
                 categoryLabel.text = "Trigger";
             else if (node is BehaviourNode)
                 categoryLabel.text = "Behaviour";
-            
+
             Label connectLabel = this.Q<Label>("connectTo");
             if (node is RootNode)
                 connectLabel.text = "Trigger";
@@ -129,6 +129,11 @@ namespace Reshape.ReGraph
             {
                 OnNodeSelected.Invoke(this);
             }
+
+            if (serializer.graph.selectedViewNode.Count == 1)
+                HighlightReference();
+            else
+                viewer.UnhighlightAllReferenceNode();
         }
 
         public override void OnUnselected ()
@@ -137,6 +142,16 @@ namespace Reshape.ReGraph
             if (OnNodeUnselected != null)
             {
                 OnNodeUnselected.Invoke(this);
+            }
+
+            if (node != null && node is TriggerBehaviourNode)
+            {
+                var referenceNode = this.node as TriggerBehaviourNode;
+                if (!string.IsNullOrEmpty(referenceNode.triggerNodeId))
+                {
+                    //-- unhighlight referenceNode
+                    viewer.UnhighlightReferenceNode(referenceNode.triggerNodeId);
+                }
             }
         }
 
@@ -178,8 +193,35 @@ namespace Reshape.ReGraph
             {
                 descriptionLabel.text = node.GetNodeViewDescription();
                 node.dirty = false;
+
+                viewer.UnhighlightAllReferenceNode();
+                HighlightReference();
             }
+
             UpdateState();
+        }
+
+        public void HighlightReference ()
+        {
+            if (node != null && node is TriggerBehaviourNode)
+            {
+                var referenceNode = this.node as TriggerBehaviourNode;
+                if (!string.IsNullOrEmpty(referenceNode.triggerNodeId))
+                {
+                    //-- highlight referenceNode
+                    viewer.HighlightReferenceNode(referenceNode.triggerNodeId);
+                }
+            }
+        }
+
+        public void ApplyRunningHighlight ()
+        {
+            AddToClassList("running");
+        }
+
+        public void UnapplyRunningHighlight ()
+        {
+            RemoveFromClassList("running");
         }
 
         public void UpdateState ()

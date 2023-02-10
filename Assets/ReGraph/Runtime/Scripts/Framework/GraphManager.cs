@@ -23,12 +23,7 @@ namespace Reshape.ReGraph
 		[HideLabel]
 		[ValueDropdown("DrawActionNameListDropdown", ExpandAllMenuItems = true)]
 		public ActionNameChoice actionName;
-			
-		private static IEnumerable DrawActionNameListDropdown()
-		{
-			return ActionNameChoice.GetActionNameListDropdown();
-		}
-
+		
 		public static void ExecuteList (FlowAction[] actions)
 		{
 			for (int i = 0; i < actions.Length; i++)
@@ -39,6 +34,13 @@ namespace Reshape.ReGraph
 				}
 			}
 		}
+		
+#if UNITY_EDITOR
+		private static IEnumerable DrawActionNameListDropdown()
+		{
+			return ActionNameChoice.GetActionNameListDropdown();
+		}
+#endif
 	}
 	
 	[HideMonoScript]
@@ -100,7 +102,7 @@ namespace Reshape.ReGraph
 	        if (IsSystemInitFlowCompleted())
 	        {
 		        FlowAction.ExecuteList(initActions);
-	        	ReDebug.Log("ReSystemFlowController.UpdateInitFlow", "System Init Flow Completed");
+	        	ReDebug.Log("GraphManager", "System Init Flow Completed");
 	            StartSystemBeginFlow();
 	            updateDelegate = UpdateBeginFlow;
 	            UpdateBeginFlow();
@@ -113,7 +115,7 @@ namespace Reshape.ReGraph
 	        if (IsSystemBeginFlowCompleted())
 	        {
 		        FlowAction.ExecuteList(beginActions);
-	        	ReDebug.Log("ReSystemFlowController.UpdateBeginFlow", "System Begin Flow Completed");
+	        	ReDebug.Log("GraphManager", "System Begin Flow Completed");
 	            updateDelegate = UpdateTickFlow;
 	        }
 	    }
@@ -123,7 +125,7 @@ namespace Reshape.ReGraph
 	        StartSystemTickFlow();
 	        if (!IsSystemTickFlowCompleted())
 	        {
-	            ReDebug.LogError("ReSystemFlowController.UpdateTickFlow", "System Update Flow Not Completed Within A Frame");
+	            ReDebug.LogError("GraphManager", "System Update Flow Not Completed Within A Frame");
 	        }
 	        FlowAction.ExecuteList(tickActions);
 	    }
@@ -134,7 +136,7 @@ namespace Reshape.ReGraph
 		    if (IsSystemUninitFlowCompleted())
 		    {
 			    FlowAction.ExecuteList(uninitActions);
-			    ReDebug.Log("ReSystemFlowController.OnDestroy", "System Uninit Flow Completed");
+			    ReDebug.Log("GraphManager", "System Uninit Flow Completed");
 			    updateDelegate = null;
 			    ClearInstance();
 			    ClearSystemFlow();

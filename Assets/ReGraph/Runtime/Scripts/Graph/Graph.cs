@@ -188,21 +188,72 @@ namespace Reshape.ReGraph
         {
             if (!Created)
                 return;
-            execution.state = rootNode.Update(execution, updateId);
-        }
-
-        public void ResumeExecute (long executionId, int updateId)
-        {
-            if (!Created)
-                return;
-            var execution = executes.Find(executionId);
             if (execution != null)
                 execution.state = rootNode.Update(execution, updateId);
         }
 
-        public void Update (int updateId)
+        public GraphExecution FindExecute (long executionId)
         {
             if (!Created)
+                return null;
+            return executes.Find(executionId);
+        }
+
+        public void ResumeExecute (GraphExecution execution, int updateId)
+        {
+            if (!Created)
+                return;
+            if (execution != null)
+                execution.state = rootNode.Update(execution, updateId);
+        }
+        
+        public void StopExecute (GraphExecution execution, int updateId)
+        {
+            if (!Created)
+                return;
+            if (execution != null)
+            {
+                execution.Stop();
+            }
+        }
+        
+        public void StopExecutes ()
+        {
+            if (!Created)
+                return;
+            if (executes != null)
+            {
+                executes.Stop();
+            }
+        }
+        
+        public void PauseExecutes ()
+        {
+            if (!Created || executes == null)
+                return;
+            for (int i = 0; i < executes.Count; i++)
+            {
+                var execution = executes.Get(i);
+                if (execution.state == Node.State.Running)
+                    rootNode.Pause(execution);
+            }
+        }
+        
+        public void UnpauseExecutes ()
+        {
+            if (!Created || executes == null)
+                return;
+            for (int i = 0; i < executes.Count; i++)
+            {
+                var execution = executes.Get(i);
+                if (execution.state == Node.State.Running)
+                    rootNode.Unpause(execution);
+            }
+        }
+
+        public void Update (int updateId)
+        {
+            if (!Created || executes == null)
                 return;
             for (int i = 0; i < executes.Count; i++)
             {
@@ -214,15 +265,29 @@ namespace Reshape.ReGraph
 
         public void Reset ()
         {
-            executes.Clear();
+            if (executes != null)
+                executes.Clear();
             Traverse(rootNode, node => { node.Reset(); });
         }
 
         public void Stop ()
         {
-            for (int i = 0; i < executes.Count; i++)
-                rootNode?.Abort(executes.Get(i));
+            if (executes != null)
+                for (int i = 0; i < executes.Count; i++)
+                    rootNode?.Abort(executes.Get(i));
             Reset();
+        }
+        
+        public bool HaveRequireUpdate()
+        {
+            if (!Created || executes == null)
+                return false;
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i] != null && nodes[i].IsRequireUpdate())
+                    return true;
+            }
+            return false;
         }
 
         public static List<GraphNode> GetChildren (GraphNode parent)

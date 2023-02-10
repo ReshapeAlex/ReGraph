@@ -13,7 +13,7 @@ namespace Reshape.ReGraph
         [TextArea]
         [OnValueChanged("MarkDirty")]
         private string message;
-        
+
         protected override void OnStart (GraphExecution execution, int updateId)
         {
             if (string.IsNullOrEmpty(message))
