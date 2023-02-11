@@ -74,7 +74,6 @@ namespace Reshape.ReGraph
         [HideLabel]
         [OnInspectorGUI("UpdateValueX")]
         [HideIf("@executionType==ExecutionType.None")]
-        [InlineButton("UpdateValueX")]
         private VectorElement x;
 
         [SerializeField]
