@@ -14,8 +14,9 @@ namespace Reshape.ReGraph
 
         public enum ExecutionType
         {
-            EnableIt,
-            DisableIt
+            None,
+            EnableIt = 10,
+            DisableIt = 11
         }
 
         [SerializeReference]
@@ -32,7 +33,11 @@ namespace Reshape.ReGraph
 
         protected override void OnStart (GraphExecution execution, int updateId)
         {
-            if (!string.IsNullOrEmpty(triggerNode))
+            if (string.IsNullOrEmpty(triggerNode) || executionType == ExecutionType.None)
+            {
+                ReDebug.LogWarning("Graph Warning", "Found an empty Trigger Behaviour node in " + context.gameObject.name);
+            }
+            else
             {
                 var triggers = Graph.GetChildren(context.graph.RootNode);
                 for (int i = 0; i < triggers.Count; i++)
@@ -50,6 +55,7 @@ namespace Reshape.ReGraph
                     }
                 }
             }
+
             base.OnStart(execution, updateId);
         }
 

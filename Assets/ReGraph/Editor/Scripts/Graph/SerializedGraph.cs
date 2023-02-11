@@ -63,6 +63,7 @@ namespace Reshape.ReGraph
         public SerializedProperty FindNode (SerializedProperty array, GraphNode node)
         {
             if (node == null) return null;
+            if (array.serializedObject == null) return null;
             for (int i = 0; i < array.arraySize; ++i)
             {
                 var current = array.GetArrayElementAtIndex(i);
