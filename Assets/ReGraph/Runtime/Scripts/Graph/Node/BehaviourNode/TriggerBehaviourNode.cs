@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using Reshape.Unity;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Reshape.ReGraph
 {

@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using Reshape.Unity;
 using Sirenix.OdinInspector;
 using UnityEngine;
