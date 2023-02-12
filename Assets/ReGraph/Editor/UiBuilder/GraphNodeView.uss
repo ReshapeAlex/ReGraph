@@ -114,6 +114,10 @@
     background-color: rgb(180, 52, 255);
 }
 
+.condition #input {
+    background-color: rgb(255, 255, 150);
+}
+
 .behaviour #input {
     background-color: rgb(246, 174, 45);
 }

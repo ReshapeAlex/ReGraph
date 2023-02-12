@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Reshape.Unity;
-using Reshape.Controller;
+using Reshape.Reframework;
 using Sirenix.OdinInspector;
 #if UNITY_EDITOR
 	using UnityEditor;

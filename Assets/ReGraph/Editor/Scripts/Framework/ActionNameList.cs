@@ -4,7 +4,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using UnityEditor;
 
-namespace Reshape.ReGraph
+namespace Reshape.Reframework
 {
     [CreateAssetMenu(menuName = "Reshape/Action Name List", fileName = "ReshapeActionNameList", order = 101)]
     public class ActionNameList : ScriptableObject

@@ -102,6 +102,8 @@ namespace Reshape.ReGraph
                         continue;
                     if (startNodeView.node is BehaviourNode && endNodeView.node is BehaviourNode == false)
                         continue;
+                    if (startNodeView.node is VariableBehaviourNode == false && endNodeView.node is ConditionNode)
+                        continue;
                 }
                 if (endPort.direction != startPort.direction && endPort.node != startPort.node)
                     returnList.Add(endPort);
@@ -168,14 +170,40 @@ namespace Reshape.ReGraph
         public Dictionary<string, System.Type> GetContextualList (Graph graph)
         {
             var list = new Dictionary<string, System.Type>();
+            List<System.Type> existed = new List<Type>();
             if (graph.Type == Graph.GraphType.BehaviourGraph)
             {
                 var types = TypeCache.GetTypesDerivedFrom<TriggerNode>();
                 foreach (var type in types)
-                    list.Add($"Trigger/{type.Name.Substring(0,type.Name.IndexOf("TriggerNode"))}", type);
+                {
+                    if (!existed.Contains(type))
+                    {
+                        list.Add($"Trigger/{type.Name.Substring(0, type.Name.IndexOf("TriggerNode"))}", type);
+                        existed.Add(type);
+                    }
+                }
+                types = TypeCache.GetTypesDerivedFrom<ConditionNode>();
+                foreach (var type in types)
+                {
+                    if (!existed.Contains(type))
+                    {
+                        list.Add($"Condition/{type.Name.Substring(0, type.Name.IndexOf("ConditionNode"))}", type);
+                        existed.Add(type);
+                    }
+                }
                 types = TypeCache.GetTypesDerivedFrom<BehaviourNode>();
                 foreach (var type in types)
-                    list.Add($"Behaviour/{type.Name.Substring(0,type.Name.IndexOf("BehaviourNode"))}", type);
+                {
+                    if (!existed.Contains(type))
+                    {
+                        int index = type.Name.IndexOf("BehaviourNode");
+                        if (index >= 0)
+                        {
+                            list.Add($"Behaviour/{type.Name.Substring(0, index)}", type);
+                            existed.Add(type);
+                        }
+                    }
+                }
             }
             return list;
         }
@@ -189,6 +217,10 @@ namespace Reshape.ReGraph
             else if (node is RootNode)
             {
                 return "root";
+            }
+            else if (node is ConditionNode)
+            {
+                return "condition";
             }
             else if (node is BehaviourNode)
             {

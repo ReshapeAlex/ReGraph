@@ -56,6 +56,8 @@ namespace Reshape.ReGraph
             Label categoryLabel = this.Q<Label>("category");
             if (node is TriggerNode)
                 categoryLabel.text = "Trigger";
+            else if (node is ConditionNode)
+                categoryLabel.text = "Condition";
             else if (node is BehaviourNode)
                 categoryLabel.text = "Behaviour";
 
@@ -64,6 +66,8 @@ namespace Reshape.ReGraph
                 connectLabel.text = "Trigger";
             else if (node is TriggerNode)
                 connectLabel.text = "Behaviour";
+            else if (node is VariableBehaviourNode)
+                connectLabel.text = "Behaviour / Condition";
             else if (node is BehaviourNode)
                 connectLabel.text = "Behaviour";
 

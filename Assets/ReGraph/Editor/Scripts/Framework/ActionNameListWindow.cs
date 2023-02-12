@@ -5,7 +5,7 @@ using UnityEditor;
 using Sirenix.OdinInspector.Editor;
 using UnityEngine;
 
-namespace Reshape.ReGraph
+namespace Reshape.Reframework
 {
     public class ActionNameListWindow : OdinEditorWindow
     {

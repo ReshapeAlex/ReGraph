@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using Reshape.Unity;
 
-namespace Reshape.ReGraph
+namespace Reshape.Reframework
 {
     [AddComponentMenu("")]
 	public class BaseBehaviour : ReMonoBehaviour

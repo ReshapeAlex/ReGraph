@@ -1,7 +1,9 @@
-using System;
 using Reshape.Unity;
 using Sirenix.OdinInspector;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Reshape.ReGraph
 {
@@ -9,17 +11,31 @@ namespace Reshape.ReGraph
     public class DebugBehaviourNode : BehaviourNode
     {
         private const string DEBUG_PREFIX = "Graph Debug";
+
         [SerializeField]
         [TextArea]
         [OnValueChanged("MarkDirty")]
         private string message;
 
+        [SerializeField]
+        [OnValueChanged("MarkDirty")]
+        private bool breakPoint;
+
         protected override void OnStart (GraphExecution execution, int updateId)
         {
-            if (string.IsNullOrEmpty(message))
-                ReDebug.LogWarning(DEBUG_PREFIX, "Found an invalid Debug Behaviour node in "+context.gameObject.name);
+            if (string.IsNullOrEmpty(message) && !breakPoint)
+            {
+                ReDebug.LogWarning(DEBUG_PREFIX, "Found an invalid Debug Behaviour node in " + context.gameObject.name);
+            }
             else
-                ReDebug.Log(DEBUG_PREFIX, message);
+            {
+                if (!string.IsNullOrEmpty(message))
+                    ReDebug.Log(DEBUG_PREFIX, message);
+#if UNITY_EDITOR
+                if (breakPoint)
+                    EditorApplication.isPaused = true;
+#endif
+            }
             base.OnStart(execution, updateId);
         }
 
@@ -27,20 +43,30 @@ namespace Reshape.ReGraph
         public static string displayName = "Debug Behaviour Node";
         public static string nodeName = "Debug";
 
-        public override string GetNodeInspectorTitle()
+        public override string GetNodeInspectorTitle ()
         {
             return displayName;
         }
 
-        public override string GetNodeViewTitle()
+        public override string GetNodeViewTitle ()
         {
             return nodeName;
         }
-        
+
         public override string GetNodeViewDescription ()
         {
             if (!string.IsNullOrEmpty(message))
-                return "[Log] " + message;
+            {
+                string header = "[Log] ";
+                if (breakPoint)
+                    header = "[Log+Break] ";
+                return header + message;
+            }
+            else if (breakPoint)
+            {
+                return "[Break]";
+            }
+
             return string.Empty;
         }
 #endif
