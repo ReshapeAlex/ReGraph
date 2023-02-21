@@ -68,6 +68,12 @@ namespace Reshape.ReGraph
         {
             OnTrigger(type, runner.gameObject);
         }
+        
+        [SpecialName]
+        public void TriggerSpawn (ActionNameChoice type)
+        {
+            Activate(TriggerNode.Type.GameObjectSpawn, actionName:type);
+        }
 
         public void ResumeTrigger (long executionId, int updateId)
         {
@@ -95,9 +101,6 @@ namespace Reshape.ReGraph
         [SpecialName]
         public override void Init ()
         {
-            context = new GraphContext(this);
-            graph?.Bind(context);
-            
             PlanTick(TickName);
             PlanUninit(); 
             DoneInit();
@@ -127,6 +130,8 @@ namespace Reshape.ReGraph
         {
             if (graph != null)
             {
+                context = new GraphContext(this);
+                graph.Bind(context);
                 if (graph.HaveRequireUpdate())
                 {
                     PlanInit();
@@ -181,7 +186,7 @@ namespace Reshape.ReGraph
             var execute = graph?.InitExecute(executeId, type);
             if (execute != null)
             {
-                if (type == TriggerNode.Type.ActionTrigger)
+                if (type is TriggerNode.Type.ActionTrigger or TriggerNode.Type.GameObjectSpawn)
                 {
                     execute.parameters.actionName = actionName;
                     graph?.RunExecute(execute, Time.frameCount);

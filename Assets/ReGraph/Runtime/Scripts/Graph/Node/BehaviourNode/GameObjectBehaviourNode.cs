@@ -1,4 +1,5 @@
 using System.Collections;
+using Reshape.Reframework;
 using Reshape.Unity;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -11,10 +12,19 @@ namespace Reshape.ReGraph
         public enum ExecutionType
         {
             None,
-            ShowIt = 10,
-            HideIt = 11,
+            Show = 10,
+            Hide = 11,
             EnableComponent = 30,
-            DisableComponent = 31
+            DisableComponent = 31,
+            Spawn = 50,
+            Expel = 51
+        }
+
+        private enum GoType
+        {
+            None,
+            WithRunner,
+            WithoutRunner
         }
 
         [SerializeField]
@@ -32,6 +42,20 @@ namespace Reshape.ReGraph
         [ValueDropdown("DrawComponentListDropdown", ExpandAllMenuItems = true)]
         private Component component;
 
+        [SerializeField]
+        [OnValueChanged("MarkDirty")]
+        [ShowIf("ShowLocation")]
+        [LabelText("Spawn Location")]
+        private Transform location;
+
+        [SerializeField]
+        [ValueDropdown("DrawActionNameListDropdown", ExpandAllMenuItems = true)]
+        [OnValueChanged("MarkDirty")]
+        [ShowIf("ShowLocation")]
+        [LabelText("OnSpawn Action")]
+        private ActionNameChoice actionName;
+
+        private GoType spawnType;
 
         protected override void OnStart (GraphExecution execution, int updateId)
         {
@@ -39,42 +63,72 @@ namespace Reshape.ReGraph
             {
                 ReDebug.LogWarning("Graph Warning", "Found an empty GameObject Behaviour node in " + context.gameObject.name);
             }
-            else
+            else if (executionType is ExecutionType.DisableComponent or ExecutionType.EnableComponent)
             {
-                if (executionType is ExecutionType.DisableComponent or ExecutionType.EnableComponent)
+                if (component == null)
                 {
-                    if (component == null)
+                    ReDebug.LogWarning("Graph Warning", "Found an empty GameObject Behaviour node in " + context.gameObject.name);
+                }
+                else
+                {
+                    bool value = executionType == ExecutionType.EnableComponent;
+                    if (component is Renderer)
                     {
-                        ReDebug.LogWarning("Graph Warning", "Found an empty GameObject Behaviour node in " + context.gameObject.name);
+                        var comp = (Renderer) component;
+                        comp.enabled = value;
                     }
-                    else
+                    else if (component is Collider)
                     {
-                        bool value = executionType == ExecutionType.EnableComponent;
-                        if (component is Renderer)
-                        {
-                            var comp = (Renderer)component;
-                            comp.enabled = value;
-                        }
-                        else if (component is Collider)
-                        {
-                            var comp = (Collider)component;
-                            comp.enabled = value;
-                        }
-                        else if (component is Behaviour)
-                        {
-                            var comp = (Behaviour)component;
-                            comp.enabled = value;
-                        }
+                        var comp = (Collider) component;
+                        comp.enabled = value;
+                    }
+                    else if (component is Behaviour)
+                    {
+                        var comp = (Behaviour) component;
+                        comp.enabled = value;
                     }
                 }
-                else if (executionType == ExecutionType.ShowIt)
+            }
+            else if (executionType == ExecutionType.Show)
+            {
+                gameObject.SetActiveOpt(true);
+            }
+            else if (executionType == ExecutionType.Hide)
+            {
+                gameObject.SetActiveOpt(false);
+            }
+            else if (executionType == ExecutionType.Spawn)
+            {
+                GameObject go = null;
+                if (location != null)
+                    go = context.runner.TakeFromPool(gameObject, location);
+                else
+                    go = context.runner.TakeFromPool(gameObject, context.transform);
+                if (go != null && actionName != null)
                 {
-                    gameObject.SetActiveOpt(true);
+                    if (spawnType == GoType.None)
+                    {
+                        GraphRunner gr = go.GetComponent<GraphRunner>();
+                        if (gr != null)
+                        {
+                            spawnType = GoType.WithRunner;
+                            gr.TriggerSpawn(actionName);
+                        }
+                        else
+                        {
+                            spawnType = GoType.WithoutRunner;
+                        }
+                    }
+                    else if (spawnType == GoType.WithRunner)
+                    {
+                        GraphRunner gr = go.GetComponent<GraphRunner>();
+                        gr.TriggerSpawn(actionName);
+                    }
                 }
-                else if (executionType == ExecutionType.HideIt)
-                {
-                    gameObject.SetActiveOpt(false);
-                }
+            }
+            else if (executionType == ExecutionType.Expel)
+            {
+                context.runner.InsertIntoPool(gameObject, true);
             }
 
             base.OnStart(execution, updateId);
@@ -84,6 +138,13 @@ namespace Reshape.ReGraph
         private bool ShowComponent ()
         {
             if (executionType is ExecutionType.DisableComponent or ExecutionType.EnableComponent)
+                return true;
+            return false;
+        }
+
+        private bool ShowLocation ()
+        {
+            if (executionType is ExecutionType.Spawn)
                 return true;
             return false;
         }
@@ -102,6 +163,11 @@ namespace Reshape.ReGraph
             }
 
             return actionNameListDropdown;
+        }
+
+        private static IEnumerable DrawActionNameListDropdown ()
+        {
+            return ActionNameChoice.GetActionNameListDropdown();
         }
 
         public static string displayName = "GameObject Behaviour Node";
@@ -129,13 +195,24 @@ namespace Reshape.ReGraph
                 {
                     return "Enable " + component.name + " in " + gameObject.name;
                 }
-                else if (executionType == ExecutionType.ShowIt)
+                else if (executionType == ExecutionType.Show)
                 {
                     return "Show " + gameObject.name;
                 }
-                else if (executionType == ExecutionType.HideIt)
+                else if (executionType == ExecutionType.Hide)
                 {
                     return "Hide " + gameObject.name;
+                }
+                else if (executionType == ExecutionType.Spawn)
+                {
+                    if (actionName != null)
+                        return "Spawn " + gameObject.name + " with " + actionName + " action";
+                    else
+                        return "Spawn " + gameObject.name;
+                }
+                else if (executionType == ExecutionType.Expel)
+                {
+                    return "Expel " + gameObject.name;
                 }
             }
 

@@ -12,7 +12,8 @@ namespace Reshape.ReGraph
             CollisionExit = 12,
             CollisionStepIn = 13,
             CollisionStepOut = 14,
-            ActionTrigger = 21
+            ActionTrigger = 21,
+            GameObjectSpawn = 31
         }
         
         private string childKey;
