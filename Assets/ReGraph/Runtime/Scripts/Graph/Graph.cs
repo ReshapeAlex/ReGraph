@@ -149,6 +149,12 @@ namespace Reshape.ReGraph
                 return String.Empty;
             return previewNode.GetNodeInspectorTitle();
         }
+
+        public void InitPreviewNode ()
+        {
+            previewNode = null;
+            previewSelected = false;
+        }
 #endif
 
         public Graph ()

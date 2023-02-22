@@ -11,28 +11,29 @@ namespace Reshape.ReGraph
     {
         [InlineEditor(Expanded = true)]
         [PropertyOrder(-3)]
-        [OnInspectorGUI("DrawGenerateAllButton")]
+        [OnInspectorGUI("DisableGUIAfter")]
+        [OnValueChanged("SelectRunner")]
         public GraphRunner runner;
 
-        [MenuItem("Tools/Reshape/Open Graph Inspector")]
+        [MenuItem("Tools/Reshape/Graph Inspector")]
         public static void OpenWindow ()
         {
             var window = GetWindow<GraphInspector>();
+            Selection.selectionChanged = window.OnSelectionChanged;
             window.Show();
         }
 
-        private void DrawGenerateAllButton ()
-        {
-            GUI.enabled = false;
-        }
-        
-        private void OnInspectorUpdate()
+        private void OnSelectionChanged ()
         {
             if (Selection.objects.Length == 1)
             {
                 if (Selection.activeGameObject)
                 {
                     runner = Selection.activeGameObject.GetComponent<GraphRunner>();
+                    if (runner != null)
+                    {
+                        runner.graph.InitPreviewNode();
+                    }
                 }
                 else
                 {
@@ -43,7 +44,25 @@ namespace Reshape.ReGraph
             {
                 runner = null;
             }
+        }
+
+        private void SelectRunner ()
+        {
+            Selection.activeObject = runner;
+        }
+        
+        private void OnInspectorUpdate()
+        {
+            if (Selection.selectionChanged != OnSelectionChanged)
+            {
+                Selection.selectionChanged = OnSelectionChanged;
+            }
             Repaint();
+        }
+        
+        private void DisableGUIAfter ()
+        {
+            GUI.enabled = false;
         }
     }
 }
