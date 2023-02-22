@@ -41,6 +41,7 @@ namespace Reshape.ReGraph
         private GraphExecutes executes;
 
         private GraphContext context;
+        private bool terminated;
 
 #if UNITY_EDITOR
         [HideInInspector]
@@ -167,6 +168,8 @@ namespace Reshape.ReGraph
         public GraphType Type => type;
 
         public bool Created => rootNode != null;
+        
+        public bool Terminated => terminated;
 
         public void Create ()
         {
@@ -212,7 +215,7 @@ namespace Reshape.ReGraph
             if (execution != null)
                 execution.state = rootNode.Update(execution, updateId);
         }
-        
+
         public void StopExecute (GraphExecution execution, int updateId)
         {
             if (!Created)
@@ -222,7 +225,7 @@ namespace Reshape.ReGraph
                 execution.Stop();
             }
         }
-        
+
         public void StopExecutes ()
         {
             if (!Created)
@@ -232,7 +235,7 @@ namespace Reshape.ReGraph
                 executes.Stop();
             }
         }
-        
+
         public void PauseExecutes ()
         {
             if (!Created || executes == null)
@@ -244,7 +247,7 @@ namespace Reshape.ReGraph
                     rootNode.Pause(execution);
             }
         }
-        
+
         public void UnpauseExecutes ()
         {
             if (!Created || executes == null)
@@ -282,9 +285,15 @@ namespace Reshape.ReGraph
                 for (int i = 0; i < executes.Count; i++)
                     rootNode?.Abort(executes.Get(i));
             Reset();
+            terminated = true;
         }
         
-        public bool HaveRequireUpdate()
+        public void Start ()
+        {
+            Traverse(rootNode, node => { node.Init(); });
+        }
+
+        public bool HaveRequireUpdate ()
         {
             if (!Created || executes == null)
                 return false;
@@ -293,6 +302,20 @@ namespace Reshape.ReGraph
                 if (nodes[i] != null && nodes[i].IsRequireUpdate())
                     return true;
             }
+
+            return false;
+        }
+        
+        public bool HaveRequireInit ()
+        {
+            if (!Created || executes == null)
+                return false;
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i] != null && nodes[i].IsRequireInit())
+                    return true;
+            }
+
             return false;
         }
 

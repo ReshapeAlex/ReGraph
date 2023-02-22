@@ -74,6 +74,11 @@ namespace Reshape.ReGraph
         {
             Activate(TriggerNode.Type.GameObjectSpawn, actionName:type);
         }
+        
+        public void TriggerInput (TriggerNode.Type type, string triggerId)
+        {
+            Activate(type, actionName:triggerId);
+        }
 
         public void ResumeTrigger (long executionId, int updateId)
         {
@@ -101,7 +106,10 @@ namespace Reshape.ReGraph
         [SpecialName]
         public override void Init ()
         {
-            PlanTick(TickName);
+            if (graph.HaveRequireInit())
+                Activate();
+            if (graph.HaveRequireUpdate())
+                PlanTick(TickName);
             PlanUninit(); 
             DoneInit();
         }
@@ -117,8 +125,10 @@ namespace Reshape.ReGraph
         [SpecialName]
         public override void Uninit ()
         {
-            OmitTick();
-            Deactivate();
+            if (graph.HaveRequireUpdate())
+                OmitTick();
+            if (graph.HaveRequireInit())
+                Deactivate();
             DoneUninit();
         }
         
@@ -132,7 +142,7 @@ namespace Reshape.ReGraph
             {
                 context = new GraphContext(this);
                 graph.Bind(context);
-                if (graph.HaveRequireUpdate())
+                if (graph.HaveRequireUpdate() || graph.HaveRequireInit())
                 {
                     PlanInit();
                 }
@@ -147,6 +157,18 @@ namespace Reshape.ReGraph
         protected void OnEnable ()
         {
             Enable();
+        }
+
+        protected void OnDestroy ()
+        {
+            if (graph?.Terminated == false)
+            {
+                OmitUninit();
+                if (graph.HaveRequireUpdate())
+                    OmitTick();
+                if (graph.HaveRequireInit())
+                    Deactivate();
+            }
         }
 
         protected void OnTriggerEnter (Collider other)
@@ -186,7 +208,7 @@ namespace Reshape.ReGraph
             var execute = graph?.InitExecute(executeId, type);
             if (execute != null)
             {
-                if (type is TriggerNode.Type.ActionTrigger or TriggerNode.Type.GameObjectSpawn)
+                if (type is TriggerNode.Type.ActionTrigger or TriggerNode.Type.GameObjectSpawn or TriggerNode.Type.InputPress or TriggerNode.Type.InputRelease)
                 {
                     execute.parameters.actionName = actionName;
                     graph?.RunExecute(execute, Time.frameCount);
@@ -220,6 +242,11 @@ namespace Reshape.ReGraph
             if (activated) return;
             if (!stopOnDeactivate)
                 graph?.PauseExecutes();
+        }
+        
+        private void Activate()
+        {
+            graph?.Start();
         }
         
         private void Deactivate()

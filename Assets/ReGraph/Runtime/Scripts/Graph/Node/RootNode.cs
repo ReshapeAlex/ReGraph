@@ -50,7 +50,7 @@ namespace Reshape.ReGraph
         }
 
         protected override void OnStop (GraphExecution execution, int updateId) { }
-
+        protected override void OnInit () { }
         protected override void OnReset () { }
 
         protected override void OnPause (GraphExecution execution)
@@ -85,6 +85,11 @@ namespace Reshape.ReGraph
         }
 
         public override bool IsRequireUpdate ()
+        {
+            return false;
+        }
+        
+        public override bool IsRequireInit ()
         {
             return false;
         }

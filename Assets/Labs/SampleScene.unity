@@ -547,6 +547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 382285731}
+  - component: {fileID: 382285732}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -569,6 +570,118 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &382285732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382285730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3586afbf28c64d03bef1f56ce2a79a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runEvenInactive: 0
+  runEvenDisabled: 0
+  stopOnDeactivate: 0
+  graph:
+    type: 10
+    rootNode:
+      rid: 416474624645136384
+    nodes:
+    - rid: 416474624645136384
+    - rid: 416474624645136385
+    - rid: 416474624645136391
+    - rid: 416474624645136392
+    - rid: 416474624645136429
+    - rid: 416474624645136430
+    executes:
+      executionList: []
+    viewPosition: {x: 328, y: 39, z: 0}
+    viewScale: {x: 1, y: 1, z: 1}
+    previewNode:
+      rid: 416474624645136429
+    previewSelected: 1
+    multipleSelectionWarning: Multiple Dialog Tree selected!
+  references:
+    version: 2
+    RefIds:
+    - rid: 416474624645136384
+      type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 9d689392-34f7-49fe-894e-9831c6916f26
+        position: {x: 0, y: 0}
+        runner: {fileID: 0}
+        children:
+        - rid: 416474624645136429
+        - rid: 416474624645136385
+        drawGizmos: 0
+        dirty: 0
+    - rid: 416474624645136385
+      type: {class: InputTriggerNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 105193f31ded7418b844e5dc941419bd
+        position: {x: 201, y: 124}
+        runner: {fileID: 382285732}
+        children:
+        - rid: 416474624645136392
+        drawGizmos: 0
+        dirty: 0
+        triggerType: 61
+        inputAction: {fileID: -944628639613478452, guid: 74db26165b23a41cc92915c5cc8371ba, type: 3}
+        inputName: Fire
+    - rid: 416474624645136391
+      type: {class: ActionTriggerNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 68aa83beb2e8a491ba342ece06a50c1a
+        position: {x: 390.79987, y: 124}
+        runner: {fileID: 382285732}
+        children: []
+        drawGizmos: 0
+        dirty: 0
+        actionName: {fileID: 0}
+    - rid: 416474624645136392
+      type: {class: DebugBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 9f9e4b17e66bc4bc2afddbccc929e740
+        position: {x: 321, y: 325}
+        runner: {fileID: 382285732}
+        children: []
+        drawGizmos: 0
+        dirty: 0
+        message: Mouse Clicked
+        breakPoint: 0
+    - rid: 416474624645136429
+      type: {class: InputTriggerNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 1de47e6a3d031445fa13f7c40585f5f1
+        position: {x: 84, y: 263}
+        runner: {fileID: 382285732}
+        children:
+        - rid: 416474624645136430
+        drawGizmos: 0
+        dirty: 0
+        triggerType: 62
+        inputAction: {fileID: -944628639613478452, guid: 74db26165b23a41cc92915c5cc8371ba, type: 3}
+        inputName: Fire
+    - rid: 416474624645136430
+      type: {class: DebugBehaviourNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
+      data:
+        enabled: 1
+        guid: 2f7e02ee4a20f48858f5abcc08b350b3
+        position: {x: -79, y: 235}
+        runner: {fileID: 382285732}
+        children: []
+        drawGizmos: 0
+        dirty: 0
+        message: Mouse Released
+        breakPoint: 0
 --- !u!1 &585813302
 GameObject:
   m_ObjectHideFlags: 0
@@ -1536,8 +1649,8 @@ MonoBehaviour:
     - rid: 416474593966424095
     executes:
       executionList: []
-    viewPosition: {x: 800, y: 177, z: 0}
-    viewScale: {x: 0.65751624, y: 0.65751624, z: 1}
+    viewPosition: {x: 1085, y: 149, z: 0}
+    viewScale: {x: 0.7561437, y: 0.7561437, z: 1}
     previewNode:
       rid: -2
     previewSelected: 0
@@ -2256,12 +2369,14 @@ MonoBehaviour:
     viewPosition: {x: 122, y: 11, z: 0}
     viewScale: {x: 1, y: 1, z: 1}
     previewNode:
-      rid: 416474593966424512
-    previewSelected: 1
+      rid: -2
+    previewSelected: 0
     multipleSelectionWarning: Multiple Dialog Tree selected!
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 416474593966424441
       type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
@@ -2420,12 +2535,14 @@ MonoBehaviour:
     viewPosition: {x: -29, y: 168, z: 0}
     viewScale: {x: 1, y: 1, z: 1}
     previewNode:
-      rid: 416474593966424428
-    previewSelected: 1
+      rid: -2
+    previewSelected: 0
     multipleSelectionWarning: Multiple Dialog Tree selected!
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 416474280828338412
       type: {class: RootNode, ns: Reshape.ReGraph, asm: Reshape.ReGraph.Runtime}
       data:
@@ -2774,7 +2891,7 @@ MonoBehaviour:
     - rid: 416474255078458298
     executes:
       executionList: []
-    viewPosition: {x: 150, y: -217, z: 0}
+    viewPosition: {x: 363, y: 53, z: 0}
     viewScale: {x: 1, y: 1, z: 1}
     previewNode:
       rid: -2

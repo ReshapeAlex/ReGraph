@@ -65,7 +65,7 @@ namespace Reshape.ReGraph
         
         public override string GetNodeViewDescription ()
         {
-            return actionName == null ? String.Empty : "Action Name : "+actionName;
+            return actionName == null ? string.Empty : "Action Name : "+actionName;
         }
 #endif
     }

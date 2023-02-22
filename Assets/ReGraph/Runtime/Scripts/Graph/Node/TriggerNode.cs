@@ -13,7 +13,9 @@ namespace Reshape.ReGraph
             CollisionStepIn = 13,
             CollisionStepOut = 14,
             ActionTrigger = 21,
-            GameObjectSpawn = 31
+            GameObjectSpawn = 31,
+            InputPress = 61,
+            InputRelease = 62,
         }
         
         private string childKey;
@@ -69,7 +71,7 @@ namespace Reshape.ReGraph
         }
 
         protected override void OnStop (GraphExecution execution, int updateId) { }
-
+        protected override void OnInit () { }
         protected override void OnReset () { }
         
         protected override void OnPause (GraphExecution execution)
@@ -91,6 +93,8 @@ namespace Reshape.ReGraph
             return State.Failure;
         }
 
+        protected string TriggerId => guid;
+
         public override ChildrenType GetChildrenType ()
         {
             return ChildrenType.Multiple;
@@ -104,6 +108,11 @@ namespace Reshape.ReGraph
         }
         
         public override bool IsRequireUpdate ()
+        {
+            return false;
+        }
+        
+        public override bool IsRequireInit ()
         {
             return false;
         }

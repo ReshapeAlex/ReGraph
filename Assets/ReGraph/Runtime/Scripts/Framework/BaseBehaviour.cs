@@ -43,6 +43,9 @@ namespace Reshape.Reframework
 	    [SpecialName] public override void OmitPreTick() { base.OmitPreTick(); }
 	    [SpecialName] public override void OmitTick() { base.OmitTick(); }
 	    [SpecialName] public override void OmitPostTick() { base.OmitPostTick(); }
+	    [SpecialName] public override void OmitPreUninit() { base.OmitPreUninit(); }
+	    [SpecialName] public override void OmitUninit() { base.OmitUninit(); }
+	    [SpecialName] public override void OmitPostUninit() { base.OmitPostUninit(); }
 	    [SpecialName] public override void PausePreTick(string @group) { base.PausePreTick(@group); }
 	    [SpecialName] public override void PauseTick(string @group) { base.PauseTick(@group); }
 	    [SpecialName] public override void PausePostTick(string @group) { base.PausePostTick(@group); }

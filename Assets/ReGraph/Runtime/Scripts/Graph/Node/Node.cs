@@ -66,6 +66,11 @@ namespace Reshape.ReGraph
             return state;
         }
         
+        public void Init ()
+        {
+            OnInit();
+        }
+        
         public void Reset ()
         {
             OnReset();
@@ -85,6 +90,7 @@ namespace Reshape.ReGraph
         public virtual void OnDrawGizmos () { }
 #endif
 
+        protected abstract void OnInit ();
         protected abstract void OnReset ();
         protected abstract void OnPause (GraphExecution execution);
         protected abstract void OnUnpause (GraphExecution execution);

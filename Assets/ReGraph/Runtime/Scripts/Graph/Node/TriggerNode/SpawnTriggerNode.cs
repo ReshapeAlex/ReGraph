@@ -67,7 +67,7 @@ namespace Reshape.ReGraph
         {
             if (actionName != null)
                 return "Being Spawn with  "+actionName+" action";
-            return "Being Spawn";
+            return string.Empty;
         }
 #endif
     }

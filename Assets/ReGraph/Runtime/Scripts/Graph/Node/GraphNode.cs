@@ -57,5 +57,6 @@ namespace Reshape.ReGraph
         public abstract ChildrenType GetChildrenType ();
         public abstract void GetChildren (ref List<GraphNode> list);
         public abstract bool IsRequireUpdate ();
+        public abstract bool IsRequireInit ();
     }
 }
