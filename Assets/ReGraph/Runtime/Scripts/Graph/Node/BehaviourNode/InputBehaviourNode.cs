@@ -42,6 +42,11 @@ namespace Reshape.ReGraph
         [HideIf("HideParamInputAction")]
         private InputActionAsset inputAction;
 #endif
+        
+        [SerializeField]
+        [OnValueChanged("MarkDirty")]
+        [HideIf("HideParamCameraView")]
+        private Camera cameraView;
 
         [SerializeField]
         [OnValueChanged("MarkDirty")]
@@ -68,7 +73,7 @@ namespace Reshape.ReGraph
                     MouseRotationController inpect = gameObject.GetComponent<MouseRotationController>();
                     if (inpect == null)
                         inpect = gameObject.AddComponent<MouseRotationController>();
-                    inpect.Initial(paramVectorTwo1, inputAction, paramString1);
+                    inpect.Initial(paramVectorTwo1, inputAction, paramString1, cameraView);
                 }
 #endif
             }
@@ -131,6 +136,15 @@ namespace Reshape.ReGraph
         {
             if (executionType is ExecutionType.MouseRotationEnable)
                 return false;
+            return true;
+        }
+        
+        private bool HideParamCameraView ()
+        {
+#if ENABLE_INPUT_SYSTEM
+            if (executionType is ExecutionType.MouseRotationEnable)
+                return false;
+#endif
             return true;
         }
 

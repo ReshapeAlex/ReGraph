@@ -10,15 +10,17 @@ namespace Reshape.Reframework
 #if ENABLE_INPUT_SYSTEM
         private Vector2 rotateRate;
         private InputActionAsset actionAsset;
-        private InputAction action;
         private string actionName;
+        private Camera facingCamera;
+        private InputAction action;
         private Vector3 rotation;
 
-        public void Initial (Vector2 rate, InputActionAsset input, string inputName)
+        public void Initial (Vector2 rate, InputActionAsset input, string inputName, Camera cam)
         {
             rotateRate = rate;
             actionAsset = input;
             actionName = inputName;
+            facingCamera = cam;
         }
 
         public void Terminate ()
@@ -44,8 +46,18 @@ namespace Reshape.Reframework
         protected void Update ()
         {
             var movement = action.ReadValue<Vector2>();
-            rotation += new Vector3(movement.y * (Time.deltaTime * rotateRate.y), -movement.x * (Time.deltaTime * rotateRate.x), 0);
-            transform.localEulerAngles = rotation;
+            movement.x = -movement.x * (Time.deltaTime * rotateRate.x);
+            movement.y = movement.y * (Time.deltaTime * rotateRate.y);
+            if (facingCamera != null)
+            {
+                transform.Rotate(facingCamera.transform.right, movement.y, Space.World);
+                transform.Rotate(facingCamera.transform.up, movement.x, Space.World);
+            }
+            else
+            {
+                rotation += new Vector3(movement.y, movement.x, 0);
+                transform.localEulerAngles = rotation;
+            }
         }
 #endif
     }
