@@ -16,6 +16,7 @@ namespace Reshape.ReGraph
             GameObjectSpawn = 31,
             InputPress = 61,
             InputRelease = 62,
+            VariableChange = 91
         }
         
         private string childKey;

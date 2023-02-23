@@ -13,25 +13,29 @@ namespace Reshape.ReGraph
     [System.Serializable]
     public class InputTriggerNode : TriggerNode
     {
-#if ENABLE_INPUT_SYSTEM
         [ValueDropdown("TriggerTypeChoice")]
         [OnValueChanged("MarkDirty")]
         public Type triggerType;
-
+        
+#if ENABLE_INPUT_SYSTEM
         [SerializeField]
         [OnValueChanged("MarkDirty")]
         [HideIf("@triggerType==Type.None")]
         private InputActionAsset inputAction;
 
+        private InputAction inputType;
+#endif
+        
         [SerializeField]
         [OnValueChanged("MarkDirty")]
-        [HideIf("@triggerType==Type.None")]
+        [HideIf("@triggerType==Type.None || InputSystemEnabled()==false")]
         [ValueDropdown("InputActionNameChoice", ExpandAllMenuItems = false, AppendNextDrawer = true)]
         private string inputName;
-
-#elif UNITY_EDITOR
+        
+#if UNITY_EDITOR
         [DisplayAsString]
         [HideLabel]
+        [HideIf("@InputSystemEnabled()==true")]
         public string importWarning = "Please import Input System at Package Manager";
 #endif
 
@@ -67,25 +71,20 @@ namespace Reshape.ReGraph
 
         protected override void OnInit ()
         {
+#if ENABLE_INPUT_SYSTEM
             if (inputAction != null && triggerType != Type.None)
             {
-                InputAction action = inputAction.FindAction(inputName);
-                if (action != null)
+                inputType = inputAction.FindAction(inputName);
+                if (inputType != null)
                 {
                     inputAction.Enable();
                     if (triggerType == Type.InputPress)
                     {
-                        action.performed += callbackContext => 
-                        {
-                            context.runner.TriggerInput(Type.InputPress, TriggerId);
-                        };
+                        inputType.performed += OnPressed;
                     }
                     else if (triggerType == Type.InputRelease)
                     {
-                        action.canceled += callbackContext => 
-                        {
-                            context.runner.TriggerInput(Type.InputRelease, TriggerId);
-                        };
+                        inputType.canceled += OnReleased;
                     }
                 }
                 else
@@ -97,21 +96,53 @@ namespace Reshape.ReGraph
             {
                 ReDebug.LogWarning("Graph Warning", "Found an empty Input Trigger node in " + context.gameObject.name);
             }
+#endif
         }
 
+#if ENABLE_INPUT_SYSTEM
+        private void OnPressed (InputAction.CallbackContext callbackContext)
+        {
+            context.runner.TriggerInput(Type.InputPress, TriggerId);
+        }
+        
+        private void OnReleased (InputAction.CallbackContext callbackContext)
+        {
+            context.runner.TriggerInput(Type.InputRelease, TriggerId);
+        }
+#endif
+        
         protected override void OnReset ()
         {
+#if ENABLE_INPUT_SYSTEM
+            if (inputType != null)
+            {
+                if (triggerType == Type.InputPress)
+                    inputType.performed -= OnPressed;
+                else if (triggerType == Type.InputRelease)
+                    inputType.canceled -= OnReleased;
+            }
             inputAction.Disable();
+#endif
         }
 
         public override bool IsRequireInit ()
         {
+#if ENABLE_INPUT_SYSTEM
             if (inputAction == null || string.IsNullOrEmpty(inputName) || triggerType == Type.None)
                 return false;
+#endif
             return true;
         }
 
-#if UNITY_EDITOR
+        private bool InputSystemEnabled ()
+        {
+#if ENABLE_INPUT_SYSTEM
+            return true;
+#endif
+            return false;
+        }
+
+#if UNITY_EDITOR && ENABLE_INPUT_SYSTEM
         private IEnumerable InputActionNameChoice ()
         {
             ValueDropdownList<string> menu = new ValueDropdownList<string>();
@@ -129,7 +160,9 @@ namespace Reshape.ReGraph
 
             return menu;
         }
+#endif
 
+#if UNITY_EDITOR
         private IEnumerable TriggerTypeChoice ()
         {
             ValueDropdownList<Type> menu = new ValueDropdownList<Type>();
@@ -153,6 +186,7 @@ namespace Reshape.ReGraph
 
         public override string GetNodeViewDescription ()
         {
+#if ENABLE_INPUT_SYSTEM
             if (inputAction != null && !string.IsNullOrEmpty(inputName) && triggerType != Type.None)
             {
                 if (triggerType == Type.InputPress)
@@ -160,6 +194,7 @@ namespace Reshape.ReGraph
                 if (triggerType == Type.InputRelease)
                     return "Release " + inputName;
             }
+#endif
             return string.Empty;
         }
 #endif

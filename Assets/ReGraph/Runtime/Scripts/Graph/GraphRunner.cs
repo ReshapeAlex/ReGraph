@@ -79,6 +79,11 @@ namespace Reshape.ReGraph
         {
             Activate(type, actionName:triggerId);
         }
+        
+        public void TriggerVariable (TriggerNode.Type type, string triggerId)
+        {
+            Activate(type, actionName:triggerId);
+        }
 
         public void ResumeTrigger (long executionId, int updateId)
         {
@@ -208,7 +213,7 @@ namespace Reshape.ReGraph
             var execute = graph?.InitExecute(executeId, type);
             if (execute != null)
             {
-                if (type is TriggerNode.Type.ActionTrigger or TriggerNode.Type.GameObjectSpawn or TriggerNode.Type.InputPress or TriggerNode.Type.InputRelease)
+                if (type is TriggerNode.Type.ActionTrigger or TriggerNode.Type.GameObjectSpawn or TriggerNode.Type.InputPress or TriggerNode.Type.InputRelease or TriggerNode.Type.VariableChange)
                 {
                     execute.parameters.actionName = actionName;
                     graph?.RunExecute(execute, Time.frameCount);
