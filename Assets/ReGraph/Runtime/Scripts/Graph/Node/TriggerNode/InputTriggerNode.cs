@@ -136,10 +136,11 @@ namespace Reshape.ReGraph
 
         private bool InputSystemEnabled ()
         {
+            bool result = false;
 #if ENABLE_INPUT_SYSTEM
-            return true;
+            result = true;
 #endif
-            return false;
+            return result;
         }
 
 #if UNITY_EDITOR && ENABLE_INPUT_SYSTEM
