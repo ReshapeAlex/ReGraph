@@ -8,8 +8,6 @@ namespace Reshape.ReGraph
     [System.Serializable]
     public class TriggerBehaviourNode : BehaviourNode
     {
-        private const string DEBUG_PREFIX = "Graph Debug";
-
         public enum ExecutionType
         {
             None,

@@ -23,7 +23,9 @@ namespace Reshape.ReGraph
 
             Insert(0, new GridBackground());
 
-            this.AddManipulator(new ContentZoomer());
+            var zoomer = new ContentZoomer();
+            zoomer.maxScale = 1.3f;
+            this.AddManipulator(zoomer);
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new GraphDoubleClickSelection());
             this.AddManipulator(new SelectionDragger());
@@ -120,6 +122,7 @@ namespace Reshape.ReGraph
                     GraphNodeView nodeView = elem as GraphNodeView;
                     if (nodeView != null)
                     {
+                        nodeView.UnhighlightReference();
                         serializer.DeleteNode(nodeView.node);
                         OnNodeSelected(null);
                     }

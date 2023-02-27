@@ -217,6 +217,19 @@ namespace Reshape.ReGraph
                 }
             }
         }
+        
+        public void UnhighlightReference ()
+        {
+            if (node != null && node is TriggerBehaviourNode)
+            {
+                var referenceNode = this.node as TriggerBehaviourNode;
+                if (!string.IsNullOrEmpty(referenceNode.triggerNodeId))
+                {
+                    //-- highlight referenceNode
+                    viewer.UnhighlightReferenceNode(referenceNode.triggerNodeId);
+                }
+            }
+        }
 
         public void ApplyRunningHighlight ()
         {
