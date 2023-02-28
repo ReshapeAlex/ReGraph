@@ -4,7 +4,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using System.Collections;
 #if ENABLE_INPUT_SYSTEM
-using Reshape.Reframework;
+using Reshape.ReFramework;
 using UnityEngine.InputSystem;
 #endif
 

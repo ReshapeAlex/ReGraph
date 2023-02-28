@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System.Collections;
-using Reshape.Reframework;
+using Reshape.ReFramework;
 using Reshape.Unity;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;

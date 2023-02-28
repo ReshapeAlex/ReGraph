@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 	using UnityEditor;
 #endif
 
-namespace Reshape.Reframework
+namespace Reshape.ReFramework
 {
 	[CreateAssetMenu(menuName="Reshape/String Variable", order = 12)]
 	public class StringVariable : VariableScriptableObject

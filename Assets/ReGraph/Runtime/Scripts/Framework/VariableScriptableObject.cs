@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Reshape.Reframework
+namespace Reshape.ReFramework
 {
     public class VariableScriptableObject : ScriptableObject
     {

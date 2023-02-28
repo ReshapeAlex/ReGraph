@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using UnityEditor;
 #endif
 
-namespace Reshape.Reframework
+namespace Reshape.ReFramework
 {
 	public class ActionNameChoice : ScriptableObject
 	{

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-namespace Reshape.Reframework
+namespace Reshape.ReFramework
 {
     [System.Serializable]
     public class CollisionMatchInfo

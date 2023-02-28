@@ -2,7 +2,7 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Reshape.Reframework
+namespace Reshape.ReFramework
 {
     [HideMonoScript]
     public class MouseRotationController : BaseBehaviour

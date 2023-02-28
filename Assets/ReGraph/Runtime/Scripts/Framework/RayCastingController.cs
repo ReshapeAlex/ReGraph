@@ -4,7 +4,7 @@ using Reshape.Unity;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Reshape.Reframework
+namespace Reshape.ReFramework
 {
     [DisallowMultipleComponent]
     public class RayCastingController : BaseBehaviour

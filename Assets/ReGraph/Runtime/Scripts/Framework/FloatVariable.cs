@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 	using UnityEditor;
 #endif
 
-namespace Reshape.Reframework
+namespace Reshape.ReFramework
 {
 	[CreateAssetMenu(menuName="Reshape/Float Variable", order = 11)]
 	public class FloatVariable : VariableScriptableObject
