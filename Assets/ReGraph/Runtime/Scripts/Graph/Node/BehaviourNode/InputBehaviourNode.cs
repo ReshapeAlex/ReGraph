@@ -57,13 +57,14 @@ namespace Reshape.ReGraph
 
         protected override void OnStart (GraphExecution execution, int updateId)
         {
+#if ENABLE_INPUT_SYSTEM
             if (executionType is ExecutionType.None)
             {
                 ReDebug.LogWarning("Graph Warning", "Found an empty Input Behaviour node in " + context.gameObject.name);
             }
             else if (executionType is ExecutionType.MouseRotationEnable)
             {
-#if ENABLE_INPUT_SYSTEM
+
                 if (gameObject == null || inputAction == null || string.IsNullOrEmpty(paramString1))
                 {
                     ReDebug.LogWarning("Graph Warning", "Found an empty Input Behaviour node in " + context.gameObject.name);
@@ -75,7 +76,6 @@ namespace Reshape.ReGraph
                         inpect = gameObject.AddComponent<MouseRotationController>();
                     inpect.Initial(paramVectorTwo1, inputAction, paramString1, cameraView);
                 }
-#endif
             }
             else if (executionType is ExecutionType.MouseRotationDisable)
             {
@@ -90,7 +90,7 @@ namespace Reshape.ReGraph
                         inpect.Terminate();
                 }
             }
-
+#endif
             base.OnStart(execution, updateId);
         }
 
