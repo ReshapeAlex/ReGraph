@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: FrameworkSettings
   m_EditorClassIdentifier: 
   fpPlayerController: {fileID: 4080005802794206696, guid: 360f9b5f748e44566ba3b7c995f65ead, type: 3}
+  tpPlayerController: {fileID: 4011511629871908059, guid: f0b6f8152d076468a91275469952fa96, type: 3}

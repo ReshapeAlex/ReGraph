@@ -9,11 +9,13 @@ using UnityEngine;
 
 namespace Reshape.ReFramework
 {
-    [CreateAssetMenu(menuName = "Reshape/ReFramework Settings", order = 23)]
+    //[CreateAssetMenu(menuName = "Reshape/ReFramework Settings", order = 23)]
     public class FrameworkSettings : ScriptableObject
     {
         [LabelText("1st Person Controller")]
         public GameObject fpPlayerController;
+        [LabelText("3rd Person Controller")]
+        public GameObject tpPlayerController;
         
         static FrameworkSettings FindSettings ()
         {
@@ -91,6 +93,28 @@ namespace Reshape.ReFramework
             GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(settings.fpPlayerController);
             go.name = "First Person Controller";
             ReDebug.Log("Created First Person Controller GameObject!");
+            EditorSceneManager.MarkAllScenesDirty();
+        }
+        
+        [MenuItem("GameObject/Reshape/3rd Person Controller", false, 101)]
+        public static void AddTpPlayerController()
+        {
+            if ( ReEditorHelper.IsInPrefabStage() )
+            {
+                ReDebug.LogWarning("Not able to do this action when you are editing a prefab!");
+                return;
+            }
+            GameObject[] selected = Selection.gameObjects;
+            if ( selected.Length > 0 )
+            {
+                ReDebug.LogWarning("Not able to do this action when you are selecting gameObject!");
+                return;
+            }
+            
+            var settings = FrameworkSettings.GetSettings();
+            GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(settings.tpPlayerController);
+            go.name = "Third Person Controller";
+            ReDebug.Log("Created Third Person Controller GameObject!");
             EditorSceneManager.MarkAllScenesDirty();
         }
 #endif
